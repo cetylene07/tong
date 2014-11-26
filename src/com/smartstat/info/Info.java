@@ -5,8 +5,14 @@
 
 package com.smartstat.info;
 
+import java.io.Serializable;
 
-public class Info {
+
+public class Info implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8188631357013195300L;
 	public String name; 					// 이름
 	public int rank;						// 순위
 	public int in_count; 					// 수신통화 누적 회수

@@ -1,15 +1,17 @@
 /*
- * Ã³À½ ½ÃÀÛÈ­¸é
+ * ì²˜ìŒ ì‹œì‘í™”ë©´
  */
 
 package com.hb.app.tong;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 
-import model.tong.DataBases;
-import model.tong.DbOpenHelper;
+import com.smartstat.info.Info;
+
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.ContentResolver;
@@ -23,7 +25,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
@@ -35,6 +36,7 @@ public class TongActivity extends FragmentActivity implements
 	SectionsPagerAdapter mSectionsPagerAdapter;
 	ViewPager mViewPager;
 
+	ArrayList<Info> info;
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -75,11 +77,10 @@ public class TongActivity extends FragmentActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
-
-//		this.dbOpen();
+		
 	}
 
-	// ¸Ş´º¿¡ ´ëÇÑ ¸Ş¼Òµå
+	// ë©”ë‰´ì— ëŒ€í•œ ë©”ì†Œë“œ
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		menu.add(0, 1, 0, R.string.preference);
@@ -87,12 +88,13 @@ public class TongActivity extends FragmentActivity implements
 		return true;
 	}
 
-	// ¸Ş´º¿¡ ÀÖ´Â ¾ÆÀÌÅÛÀ» Å¬¸¯ÇÏ¸é È­¸éÀ» ³Ñ°ÜÁİ´Ï´Ù.
+	// ë©”ë‰´ì— ìˆëŠ” ì•„ì´í…œì„ í´ë¦­í•˜ë©´ í™”ë©´ì„ ë„˜ê²¨ì¤ë‹ˆë‹¤.
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
 		switch (item.getItemId()) {
 		case 1:
 			intent = new Intent(TongActivity.this, SetPreferenceActivity.class);
+			
 			startActivity(intent);
 			return true;
 		}
@@ -102,8 +104,6 @@ public class TongActivity extends FragmentActivity implements
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
-		// When the given tab is selected, switch to the corresponding page in
-		// the ViewPager.
 		mViewPager.setCurrentItem(tab.getPosition());
 	}
 
@@ -115,67 +115,6 @@ public class TongActivity extends FragmentActivity implements
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
-	}
-
-	/*
-	 * ¾Û ½ÇÇà ½Ã Ã³À½¿¡ callDB¸¦ ¿¬´Ù. ÀÌ ¶§ DB°¡ ÀÖ´Ù¸é.. DB ¾÷±×·¹ÀÌµå. DB°¡ ¾ø´Ù¸é »õ·Î »ı¼º
-	 */
-	public void dbOpen() {
-		boolean uri_found = false;
-		ContentResolver cr = this.getContentResolver();
-		DbOpenHelper mDbOpenHelper = new DbOpenHelper(getApplicationContext());
-
-		String name,sdate = null;
-
-		Cursor cursor = cr.query(CallLog.Calls.CONTENT_URI, null, null, null,
-				CallLog.Calls.DATE + " DESC");
-
-		if (cursor.moveToNext())
-			uri_found = true;
-
-		if (uri_found == true) {
-
-			int ididx = cursor.getColumnIndex(ContactsContract.Contacts._ID);
-			int nameidx = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
-			int dateidx = cursor.getColumnIndex(CallLog.Calls.DATE);
-			int numidx = cursor.getColumnIndex(CallLog.Calls.NUMBER);
-			int duridx = cursor.getColumnIndex(CallLog.Calls.DURATION);
-			int typeidx = cursor.getColumnIndex(CallLog.Calls.TYPE);
-			boolean found = false;
-
-			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd HH:mm");
-
-			int where = 0;
-
-			// CallDB Create and Open
-			mDbOpenHelper = new DbOpenHelper(this);
-			mDbOpenHelper.open();
-
-			while (cursor.moveToNext()) {
-
-				name = cursor.getString(nameidx);
-				if (name == null) {
-					name = cursor.getString(numidx);
-				}
-
-				// »õ·Î¸¸µç DB¿¡ °ªÀ» Áı¾î³ÖÀ½
-				mDbOpenHelper.insertColumn(cursor.getString(ididx), name,
-						formatter.format(new Date(cursor.getLong(dateidx))), cursor.getString(duridx),
-						cursor.getString(typeidx));
-			}
-
-			Cursor t = mDbOpenHelper.getAllColumns();
-			Log.d("TONG", t.getCount() + "");
-			t.moveToFirst();
-			 while(t.moveToNext()) {
-			 Log.d("TONG",
-			 t.getString(t.getColumnIndex(DataBases.CreateDB.callID))+ "/" +
-			 t.getString(t.getColumnIndex(DataBases.CreateDB.NAME)) + "/" +
-			 formatter.format(new
-			 Date(t.getLong(t.getColumnIndex(DataBases.CreateDB.DATE)))));
-			 }
-
-		}
 	}
 
 	/**
@@ -234,5 +173,7 @@ public class TongActivity extends FragmentActivity implements
 			return null;
 		}
 	}
+
+
 
 }
