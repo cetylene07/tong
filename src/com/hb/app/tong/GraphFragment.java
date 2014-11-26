@@ -38,90 +38,23 @@ import com.smartstat.info.DateInfo;
 import com.smartstat.info.Info;
 
 public class GraphFragment extends Fragment {
-	/*
-	 * callActivity에 있는 데이터를 재 사용하기 위해서 상속받았다. callActivity에는 Activity를 상속받기 때문에
-	 * 원래 TimeActivity에서 쓰려던 Activity도 포함되어 있어서 상속가능
-	 */
-	/**
-	 * @uml.property  name="total_duration"
-	 */
 	double total_duration = 0;
-	/**
-	 * @uml.property  name="total_call_count"
-	 */
 	double total_call_count = 0;
-	/**
-	 * @uml.property  name="incall_count"
-	 */
 	double incall_count = 0;
-	/**
-	 * @uml.property  name="incall_duration"
-	 */
 	double incall_duration = 0;
-	/**
-	 * @uml.property  name="outcall_count"
-	 */
 	double outcall_count = 0;
-	/**
-	 * @uml.property  name="outcall_duration"
-	 */
 	double outcall_duration = 0;
-	/**
-	 * @uml.property  name="miss_count"
-	 */
 	double miss_count = 0;
-	/**
-	 * @uml.property  name="average_duration"
-	 */
 	double average_duration = 0;
-	/**
-	 * @uml.property  name="average_call_count"
-	 */
 	double average_call_count = 0;
-	/**
-	 * @uml.property  name="t_value"
-	 */
 	double t_value;
-	/**
-	 * @uml.property  name="t1_value"
-	 */
 	int t1_value;
-	/**
-	 * @uml.property  name="t_time"
-	 */
 	String t_time;
-
-	/**
-	 * @uml.property  name="gv"
-	 * @uml.associationEnd  
-	 */
 	GraphicalView gv;
-	/**
-	 * @uml.property  name="hour_gv"
-	 * @uml.associationEnd  
-	 */
 	GraphicalView hour_gv;
-	/**
-	 * @uml.property  name="when"
-	 */
 	Date when;
-
-	/**
-	 * @uml.property  name="dateinfo"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
 	DateInfo dateinfo = new DateInfo();
-
-	/**
-	 * @uml.property  name="chart_spin"
-	 * @uml.associationEnd  
-	 */
 	ArrayAdapter<CharSequence> chart_spin;
-
-	/**
-	 * @uml.property  name="chartView"
-	 * @uml.associationEnd  readOnly="true"
-	 */
 	LinearLayout chartView;
 
 	@Override
@@ -135,26 +68,19 @@ public class GraphFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		// setContentView(R.layout.activity_graph);
-		// setListAdapter(new SpeechListAdapter(getActivity()));
-
 		ContentResolver cr = getActivity().getContentResolver();
 		Cursor cursor = cr.query(CallLog.Calls.CONTENT_URI, null, null, null,
 				CallLog.Calls.DATE + " DESC");
 
 		ArrayList<Info> list = new ArrayList<Info>(); // 통계정보를 동적리스트로 객체 생성
-
 		int nameidx = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME); // 통화대상자
-																		// 이름
 		int dateidx = cursor.getColumnIndex(CallLog.Calls.DATE); // 통화 시점.
 																	// 1/1000초
 																	// 단위의 절대시간
 		int numidx = cursor.getColumnIndex(CallLog.Calls.NUMBER); // 전화번호
 		int duridx = cursor.getColumnIndex(CallLog.Calls.DURATION); // 통화시간
 		int typeidx = cursor.getColumnIndex(CallLog.Calls.TYPE); // 통화종류(수신,발신,부재중)
-
 		boolean found = false; // 같은 이름을 찾으면 누적횟수를 증가시킨다. 찾지못하면 리스트에 추가
-
 		StringBuilder result = new StringBuilder();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
@@ -173,7 +99,6 @@ public class GraphFragment extends Fragment {
 			if (name == null) {
 				name = cursor.getString(numidx); // 이름이 저장되지 않으면 번호로 저장
 			}
-			// result.append(name);
 
 			temp.name = name;
 
@@ -315,8 +240,6 @@ public class GraphFragment extends Fragment {
 		// 표시할 수치값
 		List<int[]> values = new ArrayList<int[]>();
 
-		// values.add(new int[] { 1, 25, 3, 46, 5, 76, 7 });
-		// values.add(new int[] {11,22,63,4,55,66,77});
 		values.add(new int[] { dateinfo.sun_in_dur, dateinfo.mon_in_dur,
 				dateinfo.tus_in_dur, dateinfo.wed_in_dur, dateinfo.thr_in_dur,
 				dateinfo.fri_in_dur, dateinfo.sat_in_dur });
@@ -439,8 +362,8 @@ public class GraphFragment extends Fragment {
 		hour_renderer.setBarSpacing(0.5f);
 
 		// 배경 색상
-		 renderer.setMarginsColor(Color.parseColor("#ffffff"));
-		 hour_renderer.setMarginsColor(Color.parseColor("#ffffff"));
+		renderer.setMarginsColor(Color.parseColor("#ffffff"));
+		hour_renderer.setMarginsColor(Color.parseColor("#ffffff"));
 
 		// 설정 정보 설정
 		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
@@ -487,31 +410,19 @@ public class GraphFragment extends Fragment {
 
 				chartView = (LinearLayout) getView().findViewById(
 						R.id.chartView);
-				// hourChart = (LinearLayout) getView().findViewById
-				// (R.id.hour_chart);
-
-				// dayChart.addView(gv);
-				// dayChart.addView(hour_gv);
 
 				switch (position) {
 				case 0:
 					// // 그래프를 Layout에 추가
 					chartView.removeAllViews();
-					// hourChart.setVisibility(View.INVISIBLE);
-					// dayChart.setVisibility(View.VISIBLE);
 					chartView.addView(gv);
-					// chartView.setBackgroundColor(Color.parseColor("#f6f7ef"));
 
 					break;
 
 				case 1:
 					// // 그래프를 Layout에 추가
 					chartView.removeAllViews();
-					// dayChart.setVisibility(View.INVISIBLE);
-					// hourChart.setVisibility(View.VISIBLE);
 					chartView.addView(hour_gv);
-					// hourChart.addView(hour_gv);
-					// chartView.setBackgroundColor(Color.parseColor("#f6f7ef"));
 					break;
 				}
 			}

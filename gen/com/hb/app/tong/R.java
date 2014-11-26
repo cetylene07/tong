@@ -108,14 +108,13 @@ containing a value of this type.
         public static final int btnListMonth=0x7f0a000b;
         public static final int btnSelectDateGraph=0x7f0a0011;
         public static final int callView=0x7f0a0000;
-        public static final int call_image=0x7f0a0016;
         public static final int call_list=0x7f0a000d;
-        public static final int call_name=0x7f0a0015;
+        public static final int call_name=0x7f0a0016;
         public static final int call_name1=0x7f0a0018;
         public static final int call_percent=0x7f0a001a;
         public static final int call_rank=0x7f0a0017;
         public static final int call_spinner1=0x7f0a0009;
-        public static final int call_value=0x7f0a0014;
+        public static final int call_value=0x7f0a0015;
         public static final int call_value1=0x7f0a0019;
         public static final int chartView=0x7f0a0013;
         public static final int chart_spinner=0x7f0a000f;
@@ -123,6 +122,7 @@ containing a value of this type.
         public static final int defaultDateSelectButton=0x7f0a002e;
         public static final int dialogName=0x7f0a0020;
         public static final int dialogText=0x7f0a0023;
+        public static final int face=0x7f0a0014;
         public static final int frag_call=0x7f0a0001;
         public static final int frag_graph=0x7f0a0003;
         public static final int graphView=0x7f0a0002;
@@ -165,15 +165,14 @@ containing a value of this type.
         public static final int fragment_map=0x7f030008;
         public static final int gradient_1=0x7f030009;
         public static final int incall_view=0x7f03000a;
-        public static final int incall_view_old=0x7f03000b;
-        public static final int inrank_view=0x7f03000c;
-        public static final int item_view=0x7f03000d;
-        public static final int main=0x7f03000e;
-        public static final int rank=0x7f03000f;
-        public static final int simple_main=0x7f030010;
-        public static final int sms_view=0x7f030011;
-        public static final int title=0x7f030012;
-        public static final int viewpager=0x7f030013;
+        public static final int inrank_view=0x7f03000b;
+        public static final int item_view=0x7f03000c;
+        public static final int main=0x7f03000d;
+        public static final int rank=0x7f03000e;
+        public static final int simple_main=0x7f03000f;
+        public static final int sms_view=0x7f030010;
+        public static final int title=0x7f030011;
+        public static final int viewpager=0x7f030012;
     }
     public static final class menu {
         public static final int preference=0x7f090000;

@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.Iterator;
 
 import android.content.ContentResolver;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.CallLog;
@@ -533,8 +532,8 @@ public class CallListFragment extends Fragment {
 	}
 
 	/*
-	 * 안드로이드 내장 Content Provider에 있는 CallLog에서
-	 * 통화내용(수신,발신,부재) 데이터를 Info 객체에 저장 후 리턴
+	 * 안드로이드 내장 Content Provider에 있는 CallLog에서 통화내용(수신,발신,부재) 데이터를 Info 객체에 저장 후
+	 * 리턴
 	 */
 	public ArrayList<Info> makeCallInfo() {
 		boolean uri_found = false;
@@ -643,26 +642,26 @@ public class CallListFragment extends Fragment {
 
 			for (int i = 0; i < list.size(); i++) {
 				list.get(i).setIncount_percent(
-						list.get(i).getIn_count() / total_incall_count * 100); 
+						list.get(i).getIn_count() / total_incall_count * 100);
 				list.get(i).indur_percent = list.get(i).in_dur / total_indur
-						* 100; 
+						* 100;
 				list.get(i).outcount_percent = list.get(i).out_count
-						/ total_incall_count * 100; 
+						/ total_incall_count * 100;
 				list.get(i).outdur_percent = list.get(i).out_dur / total_outdur
-						* 100; 
+						* 100;
 				list.get(i).miss_percent = list.get(i).miss_count / total_miss
-						* 100; 
+						* 100;
 
 				if (list.get(i).in_count > 0)
 					list.get(i).average_in_dur = list.get(i).in_dur
-							/ list.get(i).in_count; 
+							/ list.get(i).in_count;
 				else
 					list.get(i).average_in_dur = 0;
 				total_average_in_dur += list.get(i).average_in_dur;
 
 				if (list.get(i).out_count > 0)
 					list.get(i).average_out_dur = list.get(i).out_dur
-							/ list.get(i).out_count; 
+							/ list.get(i).out_count;
 				else
 					list.get(i).average_out_dur = 0;
 				total_average_out_dur += list.get(i).average_out_dur;
