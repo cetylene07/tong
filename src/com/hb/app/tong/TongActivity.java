@@ -4,17 +4,26 @@
 
 package com.hb.app.tong;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
+import model.tong.DataBases;
+import model.tong.DbOpenHelper;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.CallLog;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
@@ -66,6 +75,8 @@ public class TongActivity extends FragmentActivity implements
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+
+//		this.dbOpen();
 	}
 
 	// 메뉴에 대한 메소드
@@ -104,6 +115,67 @@ public class TongActivity extends FragmentActivity implements
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
+	}
+
+	/*
+	 * 앱 실행 시 처음에 callDB를 연다. 이 때 DB가 있다면.. DB 업그레이드. DB가 없다면 새로 생성
+	 */
+	public void dbOpen() {
+		boolean uri_found = false;
+		ContentResolver cr = this.getContentResolver();
+		DbOpenHelper mDbOpenHelper = new DbOpenHelper(getApplicationContext());
+
+		String name,sdate = null;
+
+		Cursor cursor = cr.query(CallLog.Calls.CONTENT_URI, null, null, null,
+				CallLog.Calls.DATE + " DESC");
+
+		if (cursor.moveToNext())
+			uri_found = true;
+
+		if (uri_found == true) {
+
+			int ididx = cursor.getColumnIndex(ContactsContract.Contacts._ID);
+			int nameidx = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
+			int dateidx = cursor.getColumnIndex(CallLog.Calls.DATE);
+			int numidx = cursor.getColumnIndex(CallLog.Calls.NUMBER);
+			int duridx = cursor.getColumnIndex(CallLog.Calls.DURATION);
+			int typeidx = cursor.getColumnIndex(CallLog.Calls.TYPE);
+			boolean found = false;
+
+			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd HH:mm");
+
+			int where = 0;
+
+			// CallDB Create and Open
+			mDbOpenHelper = new DbOpenHelper(this);
+			mDbOpenHelper.open();
+
+			while (cursor.moveToNext()) {
+
+				name = cursor.getString(nameidx);
+				if (name == null) {
+					name = cursor.getString(numidx);
+				}
+
+				// 새로만든 DB에 값을 집어넣음
+				mDbOpenHelper.insertColumn(cursor.getString(ididx), name,
+						formatter.format(new Date(cursor.getLong(dateidx))), cursor.getString(duridx),
+						cursor.getString(typeidx));
+			}
+
+			Cursor t = mDbOpenHelper.getAllColumns();
+			Log.d("TONG", t.getCount() + "");
+			t.moveToFirst();
+			 while(t.moveToNext()) {
+			 Log.d("TONG",
+			 t.getString(t.getColumnIndex(DataBases.CreateDB.callID))+ "/" +
+			 t.getString(t.getColumnIndex(DataBases.CreateDB.NAME)) + "/" +
+			 formatter.format(new
+			 Date(t.getLong(t.getColumnIndex(DataBases.CreateDB.DATE)))));
+			 }
+
+		}
 	}
 
 	/**
@@ -157,7 +229,7 @@ public class TongActivity extends FragmentActivity implements
 				return getString(R.string.title_section2).toUpperCase(l);
 			case 2:
 				return getString(R.string.title_section3).toUpperCase(l);
-			
+
 			}
 			return null;
 		}

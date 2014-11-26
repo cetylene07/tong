@@ -191,26 +191,7 @@ public class CallListFragment extends Fragment {
 				if (found == false) {
 					list.add(temp);
 				}
-
-				// 새로만든 DB에 값을 집어넣음
-				mDbOpenHelper.insertColumn(cursor.getString(ididx), name,
-						cursor.getString(dateidx), cursor.getString(duridx),
-						cursor.getString(typeidx));
-
 			}
-			
-			Cursor t = mDbOpenHelper.getAllColumns();
-			Log.d("COUNT", t.getCount()+"");
-			t.moveToFirst();
-//			while(t.moveToNext())	{
-//				Log.d("CP TEST",  t.getString(t.getColumnIndex(DataBases.CreateDB.callID))+ "/" + 
-//						t.getString(t.getColumnIndex(DataBases.CreateDB.NAME)) + "/" + 
-//						formatter.format(new Date(t.getLong(t.getColumnIndex(DataBases.CreateDB.DATE)))));
-//			}
-			
-			
-			 
-			
 			
 			total_dur = total_indur + total_outdur;
 
