@@ -1,23 +1,33 @@
 /*
- * Ã³À½ ½ÃÀÛÈ­¸é
+ * Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­ï¿½ï¿½
  */
 
 package com.hb.app.tong;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
+import model.tong.DataBases;
+import model.tong.DbOpenHelper;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.CallLog;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 public class TongActivity extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -65,10 +75,15 @@ public class TongActivity extends FragmentActivity implements
 			actionBar.addTab(actionBar.newTab()
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
+
 		}
+
+		/*
+		 * Call ë°ì´í„° ë² ì´ìŠ¤ë¥¼ ì˜¤í”ˆ DB ì—†ìœ¼ë©´ ìƒˆë¡œ ìƒì„±í•˜ê³  DB ìžˆìœ¼ë©´ ê·¸ê±° ë¶ˆëŸ¬ ì˜¤ë„ë¡ í•˜ëŠ” dbOpen í•¨ìˆ˜
+		 */
+		this.dbOpen();
 	}
 
-	// ¸Þ´º¿¡ ´ëÇÑ ¸Þ¼Òµå
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		menu.add(0, 1, 0, R.string.preference);
@@ -76,7 +91,6 @@ public class TongActivity extends FragmentActivity implements
 		return true;
 	}
 
-	// ¸Þ´º¿¡ ÀÖ´Â ¾ÆÀÌÅÛÀ» Å¬¸¯ÇÏ¸é È­¸éÀ» ³Ñ°ÜÁÝ´Ï´Ù.
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
 		switch (item.getItemId()) {
@@ -157,10 +171,84 @@ public class TongActivity extends FragmentActivity implements
 				return getString(R.string.title_section2).toUpperCase(l);
 			case 2:
 				return getString(R.string.title_section3).toUpperCase(l);
-			
+
 			}
 			return null;
 		}
 	}
 
+	public void dbOpen() {
+		boolean uri_found = false;
+		ContentResolver cr = this.getContentResolver();
+		DbOpenHelper mDbOpenHelper = new DbOpenHelper(getApplicationContext());
+
+		// CallDB Create and Open
+		mDbOpenHelper = new DbOpenHelper(this);
+		mDbOpenHelper.open();
+
+		String name, sdate = null;
+
+		Cursor cursor = cr.query(CallLog.Calls.CONTENT_URI, null, null, null,
+				CallLog.Calls.DATE + " DESC");
+
+		// í†µí™”ê¸°ë¡ì´ ìžˆë”°ë©´ ìˆ˜ì§‘í•˜ë„ë¡ í•œë‹¤. í†µí™”ê¸°ë¡ì´ ì—†ë‹¤ë©´ ìˆ˜ì§‘í•˜ì§€ ì•ŠìŒ
+		if (cursor.getCount() > 0)
+			uri_found = true;
+
+		if (uri_found == true) {
+
+			int ididx = cursor.getColumnIndex(ContactsContract.Contacts._ID);
+			int nameidx = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
+			int dateidx = cursor.getColumnIndex(CallLog.Calls.DATE);
+			int numidx = cursor.getColumnIndex(CallLog.Calls.NUMBER);
+			int duridx = cursor.getColumnIndex(CallLog.Calls.DURATION);
+			int typeidx = cursor.getColumnIndex(CallLog.Calls.TYPE);
+			boolean found = false;
+
+			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd HH:mm");
+
+			int where = 0;
+
+			cursor.moveToFirst();
+			do {
+
+				name = cursor.getString(nameidx);
+				if (name == null) {
+					name = cursor.getString(numidx);
+				}
+
+				if (mDbOpenHelper.isDuplicateID(cursor.getString(ididx))) {
+					Log.d("TEST", "Data is duplicated");
+				} else {
+					Log.d("TEST", "Data is entered");
+					mDbOpenHelper
+							.insertColumn(cursor.getString(ididx), name,
+									formatter.format(new Date(cursor
+											.getLong(dateidx))), cursor
+											.getString(duridx), cursor
+											.getString(typeidx));
+				}
+
+			} while (cursor.moveToNext());
+
+			Cursor t = mDbOpenHelper.getAllColumns();
+
+			// Toast.makeText(getApplication(), t.getCount() + "",
+			// Toast.LENGTH_SHORT).show();
+
+			t.moveToFirst();
+			do {
+				Log.d("check",
+						t.getString(t.getColumnIndex(DataBases.CreateDB.callID))
+								+ "/"
+								+ t.getString(t
+										.getColumnIndex(DataBases.CreateDB.NAME))
+								+ "/"
+								+ formatter.format(new Date(
+										t.getLong(t
+												.getColumnIndex(DataBases.CreateDB.DATE)))));
+			} while (t.moveToNext());
+
+		}
+	}
 }

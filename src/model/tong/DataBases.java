@@ -4,11 +4,11 @@ import android.provider.BaseColumns;
 
 public final class DataBases {
 
-	// Å×ÀÌºíÀÇ ±¸Á¶¸¦ ¼±¾ğ
+	// ï¿½ï¿½ï¿½Ìºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public static final class CreateDB implements BaseColumns {
 		public static final String callID = "callID";
 		public static final String NAME = "name";
-		public static final String image = "image"; //¾ÆÁ÷ ±¸ÇöÇÏÁö ¾ÊÀ½...¿¬¶ôÃ³¿¡¼­ ¾ò¾î¿Í¾ß ÇÏ´Â °Ç°¡?!
+		public static final String image = "image"; // ì•„ì§ ì‚¬ìš©í•˜ì§€ ì•ŠìŒ
 		public static final String DATE = "date";
 		public static final String DURATION = "duration";
 		public static final String TYPE = "type";

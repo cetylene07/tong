@@ -113,148 +113,148 @@ public class CallListFragment extends Fragment {
 
 		if (uri_found == true) {
 
-			int ididx = cursor.getColumnIndex(ContactsContract.Contacts._ID);
-			int nameidx = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
-			int dateidx = cursor.getColumnIndex(CallLog.Calls.DATE);
-			int numidx = cursor.getColumnIndex(CallLog.Calls.NUMBER);
-			int duridx = cursor.getColumnIndex(CallLog.Calls.DURATION);
-			int typeidx = cursor.getColumnIndex(CallLog.Calls.TYPE);
-			boolean found = false;
+//			int ididx = cursor.getColumnIndex(ContactsContract.Contacts._ID);
+//			int nameidx = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME);
+//			int dateidx = cursor.getColumnIndex(CallLog.Calls.DATE);
+//			int numidx = cursor.getColumnIndex(CallLog.Calls.NUMBER);
+//			int duridx = cursor.getColumnIndex(CallLog.Calls.DURATION);
+//			int typeidx = cursor.getColumnIndex(CallLog.Calls.TYPE);
+//			boolean found = false;
+//
+//			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd HH:mm");
+//
+//			int where = 0;
+//
+//			// CallDB Create and Open
+//			mDbOpenHelper = new DbOpenHelper(this.getActivity());
+//			mDbOpenHelper.open();
 
-			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd HH:mm");
-
-			int where = 0;
-
-			// CallDB Create and Open
-			mDbOpenHelper = new DbOpenHelper(this.getActivity());
-			mDbOpenHelper.open();
-
-			while (cursor.moveToNext()) { 
-
-				Info temp = new Info();
-				Iterator<Info> it = list.iterator();
-
-				name = cursor.getString(nameidx); 
-				number = cursor.getString(numidx);
-
-				if (name == null) {
-					name = cursor.getString(numidx); 
-				}
-
-				temp.setName(name);
-
-				found = false;
-				where = 0;
-				while (it.hasNext()) {
-					Info data = it.next();
-					if (data.getName().equals(name)) {
-
-						found = true;
-						temp = data;
-						break;
-					}
-					where++;
-				}
-
-				int type = cursor.getInt(typeidx);
-
-				switch (type) {
-				case CallLog.Calls.INCOMING_TYPE:
-					total_incall_count++;
-					total_indur += cursor.getInt(duridx);
-
-					temp.inCreaseInCount();
-					temp.setIn_dur(temp.getIn_dur() + cursor.getInt(duridx));
-					temp.setSum_dur(temp.getSum_dur() + cursor.getInt(duridx));
-
-					break;
-				case CallLog.Calls.OUTGOING_TYPE:
-					total_outcall_count++;
-					temp.inCreaseOutCount();
-					total_outdur += cursor.getInt(duridx);
-					temp.setOut_dur(temp.getOut_dur() + cursor.getInt(duridx));
-					temp.setSum_dur(temp.getSum_dur() + cursor.getInt(duridx));
-					break;
-				case CallLog.Calls.MISSED_TYPE:
-					total_miss++;
-					temp.inCreaseMissCount();
-					break;
-
-				}
-
-				long date = cursor.getLong(dateidx);
-
-				sdate = formatter.format(new Date(date));
-
-				int duration = cursor.getInt(duridx);
-
-				if (found == false) {
-					list.add(temp);
-				}
-
-				// 새로만든 DB에 값을 집어넣음
-				mDbOpenHelper.insertColumn(cursor.getString(ididx), name,
-						cursor.getString(dateidx), cursor.getString(duridx),
-						cursor.getString(typeidx));
-
-			}
-			
-			Cursor t = mDbOpenHelper.getAllColumns();
-			Log.d("COUNT", t.getCount()+"");
-			t.moveToFirst();
+//			while (cursor.moveToNext()) { 
+//
+//				Info temp = new Info();
+//				Iterator<Info> it = list.iterator();
+//
+//				name = cursor.getString(nameidx); 
+//				number = cursor.getString(numidx);
+//
+//				if (name == null) {
+//					name = cursor.getString(numidx); 
+//				}
+//
+//				temp.setName(name);
+//
+//				found = false;
+//				where = 0;
+//				while (it.hasNext()) {
+//					Info data = it.next();
+//					if (data.getName().equals(name)) {
+//
+//						found = true;
+//						temp = data;
+//						break;
+//					}
+//					where++;
+//				}
+//
+//				int type = cursor.getInt(typeidx);
+//
+//				switch (type) {
+//				case CallLog.Calls.INCOMING_TYPE:
+//					total_incall_count++;
+//					total_indur += cursor.getInt(duridx);
+//
+//					temp.inCreaseInCount();
+//					temp.setIn_dur(temp.getIn_dur() + cursor.getInt(duridx));
+//					temp.setSum_dur(temp.getSum_dur() + cursor.getInt(duridx));
+//
+//					break;
+//				case CallLog.Calls.OUTGOING_TYPE:
+//					total_outcall_count++;
+//					temp.inCreaseOutCount();
+//					total_outdur += cursor.getInt(duridx);
+//					temp.setOut_dur(temp.getOut_dur() + cursor.getInt(duridx));
+//					temp.setSum_dur(temp.getSum_dur() + cursor.getInt(duridx));
+//					break;
+//				case CallLog.Calls.MISSED_TYPE:
+//					total_miss++;
+//					temp.inCreaseMissCount();
+//					break;
+//
+//				}
+//
+//				long date = cursor.getLong(dateidx);
+//
+//				sdate = formatter.format(new Date(date));
+//
+//				int duration = cursor.getInt(duridx);
+//
+//				if (found == false) {
+//					list.add(temp);
+//				}
+//
+//				// 새로만든 DB에 값을 집어넣음
+//				mDbOpenHelper.insertColumn(cursor.getString(ididx), name,
+//						cursor.getString(dateidx), cursor.getString(duridx),
+//						cursor.getString(typeidx));
+//
+//			}
+//			
+//			Cursor t = mDbOpenHelper.getAllColumns();
+//			Log.d("COUNT", t.getCount()+"");
+//			t.moveToFirst();
 //			while(t.moveToNext())	{
 //				Log.d("CP TEST",  t.getString(t.getColumnIndex(DataBases.CreateDB.callID))+ "/" + 
 //						t.getString(t.getColumnIndex(DataBases.CreateDB.NAME)) + "/" + 
 //						formatter.format(new Date(t.getLong(t.getColumnIndex(DataBases.CreateDB.DATE)))));
 //			}
-			
-			
-			 
-			
-			
-			total_dur = total_indur + total_outdur;
-
-			for (int i = 0; i < list.size(); i++) {
-				list.get(i).setIncount_percent(
-						list.get(i).getIn_count() / total_incall_count * 100); // 占쏙옙占쏙옙
-				list.get(i).indur_percent = list.get(i).in_dur / total_indur
-						* 100; // 占쏙옙占신깍옙占싱븝옙占쏙옙
-				list.get(i).outcount_percent = list.get(i).out_count
-						/ total_incall_count * 100; // 占쌩쏙옙 횟占쏙옙 占쏙옙占쏙옙
-				list.get(i).outdur_percent = list.get(i).out_dur / total_outdur
-						* 100; // 占쌩쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙
-				list.get(i).miss_percent = list.get(i).miss_count / total_miss
-						* 100; // 占쏙옙占쏙옙 횟占쏙옙 占쏙옙占쏙옙
-
-				if (list.get(i).in_count > 0)
-					list.get(i).average_in_dur = list.get(i).in_dur
-							/ list.get(i).in_count; // 占쏙옙占�占쏙옙占쏙옙 占쏙옙占쏙옙
-				else
-					list.get(i).average_in_dur = 0;
-				total_average_in_dur += list.get(i).average_in_dur;
-
-				if (list.get(i).out_count > 0)
-					list.get(i).average_out_dur = list.get(i).out_dur
-							/ list.get(i).out_count; // 占쏙옙占�占쌩쏙옙 占쏙옙占쏙옙
-				else
-					list.get(i).average_out_dur = 0;
-				total_average_out_dur += list.get(i).average_out_dur;
-
-			}
-
-			for (int i = 0; i < list.size(); i++) {
-				list.get(i).average_in_dur_percent = list.get(i).average_in_dur
-						/ total_average_in_dur * 100;
-				list.get(i).average_out_dur_percent = list.get(i).average_out_dur
-						/ total_average_out_dur * 100;
-
-				list.get(i).sum_dur = list.get(i).in_dur + list.get(i).out_dur;
-
-				list.get(i).sum_dur_percent = list.get(i).sum_dur
-						/ (total_indur + total_outdur) * 100;
-			}
-
-			cursor.close();
+//			
+//			
+//			 
+//			
+//			
+//			total_dur = total_indur + total_outdur;
+//
+//			for (int i = 0; i < list.size(); i++) {
+//				list.get(i).setIncount_percent(
+//						list.get(i).getIn_count() / total_incall_count * 100); // 占쏙옙占쏙옙
+//				list.get(i).indur_percent = list.get(i).in_dur / total_indur
+//						* 100; // 占쏙옙占신깍옙占싱븝옙占쏙옙
+//				list.get(i).outcount_percent = list.get(i).out_count
+//						/ total_incall_count * 100; // 占쌩쏙옙 횟占쏙옙 占쏙옙占쏙옙
+//				list.get(i).outdur_percent = list.get(i).out_dur / total_outdur
+//						* 100; // 占쌩쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙
+//				list.get(i).miss_percent = list.get(i).miss_count / total_miss
+//						* 100; // 占쏙옙占쏙옙 횟占쏙옙 占쏙옙占쏙옙
+//
+//				if (list.get(i).in_count > 0)
+//					list.get(i).average_in_dur = list.get(i).in_dur
+//							/ list.get(i).in_count; // 占쏙옙占�占쏙옙占쏙옙 占쏙옙占쏙옙
+//				else
+//					list.get(i).average_in_dur = 0;
+//				total_average_in_dur += list.get(i).average_in_dur;
+//
+//				if (list.get(i).out_count > 0)
+//					list.get(i).average_out_dur = list.get(i).out_dur
+//							/ list.get(i).out_count; // 占쏙옙占�占쌩쏙옙 占쏙옙占쏙옙
+//				else
+//					list.get(i).average_out_dur = 0;
+//				total_average_out_dur += list.get(i).average_out_dur;
+//
+//			}
+//
+//			for (int i = 0; i < list.size(); i++) {
+//				list.get(i).average_in_dur_percent = list.get(i).average_in_dur
+//						/ total_average_in_dur * 100;
+//				list.get(i).average_out_dur_percent = list.get(i).average_out_dur
+//						/ total_average_out_dur * 100;
+//
+//				list.get(i).sum_dur = list.get(i).in_dur + list.get(i).out_dur;
+//
+//				list.get(i).sum_dur_percent = list.get(i).sum_dur
+//						/ (total_indur + total_outdur) * 100;
+//			}
+//
+//			cursor.close();
 
 			// 스피너 이벤트
 			Spinner spin = (Spinner) getView().findViewById(R.id.call_spinner1);
@@ -290,51 +290,51 @@ public class CallListFragment extends Fragment {
 
 					switch (position) {
 					case 0:
-
-						
-						
-						for (int i = 0; i < list.size(); i++) {
-							int max = i;
-							for (int j = i + 1; j < list.size(); j++) {
-								if (list.get(j).sum_dur > list.get(max).sum_dur) {
-									max = j;
-								}
-							}
-							Info trans = new Info();
-							trans = list.get(i);
-							list.set(i, list.get(max));
-							list.set(max, trans);
-						}
-
-						jj = 1;
-						for (int i = 0; i < list.size() - 1; i++) {
-
-							list.get(i).rank = jj;
-							if (list.get(i + 1).sum_dur != list.get(i).sum_dur) {
-								jj++;
-							}
-						}
-						
-
-						if (list.get(list.size() - 1).sum_dur != list.get(list
-								.size() - 1).sum_dur) {
-
-							list.get(list.size() - 1).rank = jj + 1;
-						} else {
-							list.get(list.size() - 1).rank = jj;
-						}
-
-						// 0占싱삼옙 temp_list占쏙옙 占쏙옙占쏙옙占싼댐옙.
-						for (int i = 0; i < list.size(); i++) {
-							if (list.get(i).getSum_dur() > 0) {
-								temp_list.add(list.get(i));
-
-							}
-						}
-
-						adapterView = new MyListAdapter(getActivity(),
-								R.layout.incall_view, temp_list, "sumdur");
-
+//
+//						
+//						
+//						for (int i = 0; i < list.size(); i++) {
+//							int max = i;
+//							for (int j = i + 1; j < list.size(); j++) {
+//								if (list.get(j).sum_dur > list.get(max).sum_dur) {
+//									max = j;
+//								}
+//							}
+//							Info trans = new Info();
+//							trans = list.get(i);
+//							list.set(i, list.get(max));
+//							list.set(max, trans);
+//						}
+//
+//						jj = 1;
+//						for (int i = 0; i < list.size() - 1; i++) {
+//
+//							list.get(i).rank = jj;
+//							if (list.get(i + 1).sum_dur != list.get(i).sum_dur) {
+//								jj++;
+//							}
+//						}
+//						
+//
+//						if (list.get(list.size() - 1).sum_dur != list.get(list
+//								.size() - 1).sum_dur) {
+//
+//							list.get(list.size() - 1).rank = jj + 1;
+//						} else {
+//							list.get(list.size() - 1).rank = jj;
+//						}
+//
+//						// 0占싱삼옙 temp_list占쏙옙 占쏙옙占쏙옙占싼댐옙.
+//						for (int i = 0; i < list.size(); i++) {
+//							if (list.get(i).getSum_dur() > 0) {
+//								temp_list.add(list.get(i));
+//
+//							}
+//						}
+//
+//						adapterView = new MyListAdapter(getActivity(),
+//								R.layout.incall_view, temp_list, "sumdur");
+//
 						ListView MyList;
 
 						MyList = (ListView) getView().findViewById(
@@ -677,10 +677,7 @@ public class CallListFragment extends Fragment {
 				}
 			});
 
-		} else {
-			// TextView tv1 = (TextView) getView().findViewById(R.id.subject1);
-			// tv1.setText("占쏙옙占쏙옙占쏙옙 占싻깍옙 占쏙옙占쏙옙");
-		}
+		} 
 
 	}
 

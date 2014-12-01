@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 public class DbOpenHelper {
 	private static final String DATABASE_NAME = "call.db";
@@ -23,14 +24,12 @@ public class DbOpenHelper {
 			super(context, name, factory, version);
 		}
 
-		// 최초 DB를 만들 때 한번만 호출된다.
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 			db.execSQL(DataBases.CreateDB._CREATE);		
 			Log.d("test", "Table onCreate Complete");
 		}
 
-		// 버전이 업데이트 되었을 경우 DB를 다시 만들어 준다.
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			db.execSQL("DROP TABLE IF EXISTS" + DataBases.CreateDB._TABLENAME);
@@ -46,7 +45,7 @@ public class DbOpenHelper {
 	
 	public DbOpenHelper open() throws SQLException	{
 		mDBHelper = new DatabaseHelper(mCtx, DATABASE_NAME, null, DATABASE_VERSION);
-		mDB = mDBHelper.getWritableDatabase();	// DB를 읽어나 쓸 수 있는 권한 부여
+		mDB = mDBHelper.getWritableDatabase();	
 		return this;
 	}
 	
@@ -76,6 +75,18 @@ public class DbOpenHelper {
 		values.put(DataBases.CreateDB.TYPE, type);
 		
 		return mDB.update(DataBases.CreateDB._TABLENAME, values, "_ID="+id, null) > 0;
+	}
+	
+	public boolean isDuplicateID(String id)	{
+		String query = "SELECT callID FROM calldb WHERE callID=" + id;
+		Cursor c = mDB.rawQuery(query, null);
+		
+		Toast.makeText(mCtx, c.getCount()+"", Toast.LENGTH_SHORT).show();
+		
+		if(c.getCount() > 0)
+			return true;
+		else
+			return false;
 	}
 	
 	// Delete DB
