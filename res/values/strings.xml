@@ -16,13 +16,9 @@
 
     <!-- callActivity에서 사용하는 스피너 옵션 -->
     <string-array name="call_choice">
-        <item>Total_Calling_Count Rank</item>
-        <item>In_Calling_Duration Rank</item>
-        <item>Average In_Calling_Duration Rank</item>
-        <item>Out_Calling_Count Rank</item>
-        <item>Out_Calling_Duration Rank</item>
-        <item>Average Out_Calling_Duration Rank</item>
-        <item>Miss_Calling_Count Rank</item>
+        <item>Total Rank</item>
+        <item>InCalling Rank</item>
+        <item>OutCalling Rank</item>
     </string-array>
 
     <!-- TimeActivity에서 사용하는 스피너 옵션 -->

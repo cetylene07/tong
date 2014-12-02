@@ -81,7 +81,7 @@ public class DbOpenHelper {
 		String query = "SELECT callID FROM calldb WHERE callID=" + id;
 		Cursor c = mDB.rawQuery(query, null);
 		
-		Toast.makeText(mCtx, c.getCount()+"", Toast.LENGTH_SHORT).show();
+//		Toast.makeText(mCtx, c.getCount()+"", Toast.LENGTH_SHORT).show();
 		
 		if(c.getCount() > 0)
 			return true;
@@ -100,8 +100,21 @@ public class DbOpenHelper {
 	}
 	
 	public Cursor getAllSums()	{
-		return null;
+		String query = "SELECT NAME, SUM(DURATION) FROM " + DataBases.CreateDB._TABLENAME + " GROUP BY NAME HAVING SUM(DURATION)>0 ORDER BY SUM(DURATION) DESC";
+		Log.d("query", "getAllSums has completed!");
+		return mDB.rawQuery(query, null);
 	}
 	
+	public Cursor getAllIncalls()	{
+		String query = "SELECT NAME, SUM(DURATION) FROM " + DataBases.CreateDB._TABLENAME + " WHERE TYPE=1 GROUP BY NAME HAVING SUM(DURATION)>0 ORDER BY SUM(DURATION) DESC";
+		Log.d("query", "getAllIncomes has completed!");
+		return mDB.rawQuery(query, null);
+	}
+	
+	public Cursor getAllOutcalls()	{
+		String query = "SELECT NAME, SUM(DURATION) FROM " + DataBases.CreateDB._TABLENAME + " WHERE TYPE=2 GROUP BY NAME HAVING SUM(DURATION)>0 ORDER BY SUM(DURATION) DESC";
+		Log.d("query", "getAllOutcomes has completed!");
+		return mDB.rawQuery(query, null);
+	}	
 	
 } 

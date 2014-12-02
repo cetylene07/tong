@@ -139,7 +139,6 @@ public class TongActivity extends FragmentActivity implements
 			switch (position) {
 			case 0:
 				return new CallListFragment();
-
 			case 1:
 				return new GraphFragment();
 			case 2:

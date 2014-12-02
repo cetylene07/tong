@@ -1,50 +1,50 @@
 
 /*
- * call log¿¡¼­ µû·Î µ¥ÀÌÅÍ¸¦ ÃßÃâÇØ¼­ ÀúÀåÇÏ´Â Å¬·¡½º
+ * call logï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
  */
 
 package com.smartstat.info;
 
 
 public class Info {
-	public String name; 					// ÀÌ¸§
-	public int rank;						// ¼øÀ§
-	public int in_count; 					// ¼ö½ÅÅëÈ­ ´©Àû È¸¼ö
-	public int in_dur; 					// ¼ö½ÅÅëÈ­ ´©Àû ½Ã°£
-	public int out_count; 					// ¹ß½ÅÅë»ê ´©Àû È¸¼ö
-	public int out_dur;					// ¹ß½ÅÅëÈ­ ´©Àû½Ã°£
-	public int miss_count;					// ºÎÀçÅëÈ­ ´©Àû È¸¼ö
-	public int sum_dur;					// ÇÕ»ê±æÀÌ :  ¼ö½Å±æÀÌ + ¹ß½Å±æÀÌ
-	public double incount_percent; 		// ¼ö½ÅÈ½¼ö ºñÀ²
-	public double indur_percent; 			// ¼ö½Å±æÀÌ ºñÀ²
-	public double outcount_percent; 		// ¹ß½ÅÈ½¼ö ºñÀ²
-	public double outdur_percent; 			// ¹ß½Å±æÀÌ ºñÀ²
-	public double miss_percent; 			// ºÎÀçÈ½¼ö ºñÀ²
+	public String name; 					
+	public int rank;						
+	public int in_count; 				
+	public int in_dur; 					
+	public int out_count; 					
+	public int out_dur;					
+	public int miss_count;					
+	public int sum_dur;					
+	public double incount_percent; 		
+	public double indur_percent; 			
+	public double outcount_percent; 		
+	public double outdur_percent; 			
+	public double miss_percent; 			
 	public double sum_dur_percent;
-	public double average_sum_dur;			//1ÀÎ´ç Æò±Õ ¼ö½Å+¹ß½Å ±æÀÌ
-	public double average_in_dur;			//1ÀÎ´ç Æò±Õ ¼ö½Å ±æÀÌ
-	public double average_out_dur;			//1ÀÎ´ç Æò±Õ ¹ß½Å ±æÀÌ
-	public double average_in_dur_percent;	//1ÀÎ´ç Æò±Õ ¼ö½Å ±æÀÌ ºñÀ²
-	public double average_out_dur_percent;	//1ÀÎ´ç Æò±Õ ¹ß½Å ±æÀÌ ºñÀ²
+	public double average_sum_dur;			
+	public double average_in_dur;			
+	public double average_out_dur;			
+	public double average_in_dur_percent;	
+	public double average_out_dur_percent;
 	public long in_year;
 	public long in_month[];
 	public long in_day[];
 	public long in_hour[];
 
-	// ÀÌ¹ÌÁö¸¦ ºÒ·¯¿À±â À§ÇÑ º¯¼öµé
+
 	public String imgId;
 	public String imgName;
-	public String call_photo;				//
+	public String call_photo;				
 
 	public Info() {
-		// »ı¼ºÀÚ : ÃÊ±âÈ­ ½ÃÅ²´Ù.
+
 		in_count = 0;
 		in_dur = 0;
 		out_count = 0;
 		out_dur = 0;
 		sum_dur = 0;
 		miss_count = 0;
-		name = "¸ô¶ó ¤»";
+		name = "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½";
 		
 		in_hour = new long[24];
 	}

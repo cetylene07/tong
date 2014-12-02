@@ -17,11 +17,7 @@
     <string-array name="call_choice">
         <item>전체 통화 길이</item>
         <item>수신길이 순위</item>
-        <item>수신 평균 길이 순위</item>
-        <item>발신횟수 순위</item>
         <item>발신길이 순위</item>
-        <item>발신 평균 길이 순위</item>
-        <item>부재횟수 순위</item>
     </string-array>
     <string-array name="chart_choice">
         <item>요일별 통화 길이</item>

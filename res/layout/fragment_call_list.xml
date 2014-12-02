@@ -20,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="#00000000"
             android:text="&lt;" />
 
         <Button
@@ -27,15 +28,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="8"
-            android:text="Button" />
+           	android:background="#00000000"
+           	android:text="2014년 12월"/>
 
         <Button
             android:id="@+id/btnAfterMonth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="#00000000"
             android:enabled="true"
-            android:text=">" />
+            android:text=">"
+            android:visibility="invisible" />
 
     </LinearLayout>
 
