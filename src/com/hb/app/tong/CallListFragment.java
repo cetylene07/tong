@@ -78,9 +78,6 @@ public class CallListFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
-		for (int i = 0; i < list.size(); i++)
-			list.remove(i);
 		return inflater.inflate(R.layout.fragment_call_list, container, false);
 	}
 

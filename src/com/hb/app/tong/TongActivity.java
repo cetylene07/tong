@@ -132,10 +132,6 @@ public class TongActivity extends FragmentActivity implements
 
 		@Override
 		public Fragment getItem(int position) {
-			// getItem is called to instantiate the fragment for the given page.
-			// Return a DummySectionFragment (defined as a static inner class
-			// below) with the page number as its lone argument.
-			// Fragment fragment = new CallListFragment();
 			switch (position) {
 			case 0:
 				return new CallListFragment();
@@ -147,16 +143,11 @@ public class TongActivity extends FragmentActivity implements
 			}
 			return null;
 
-			// Bundle args = new Bundle();
-			// args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position +
-			// 1);
-			// fragment.setArguments(args);
-			// return fragment;
+
 		}
 
 		@Override
 		public int getCount() {
-			// Show 3 total pages.
 			return 3;
 		}
 

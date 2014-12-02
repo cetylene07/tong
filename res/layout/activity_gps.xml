@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout 
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+    </LinearLayout>
+     <LinearLayout 
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+    </LinearLayout>
+
+         <LinearLayout 
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+
+     <Button
+         android:id="@+id/button1"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="위치 탐색 및 저장 시작"
+         android:textSize="25sp" />
+
+    </LinearLayout>
+             <LinearLayout 
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+
+     <Button
+         android:id="@+id/button2"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="위치탐색 및 저장 종료"
+         android:textSize="25sp" />
+
+    </LinearLayout>
+
+             <ListView
+                 android:id="@+id/listView1"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content" >
+             </ListView>
+
+</LinearLayout>

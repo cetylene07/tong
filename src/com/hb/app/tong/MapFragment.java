@@ -1,68 +1,67 @@
 /*
- * ½Ã°£ ±×·¡ÇÁ Ãâ·Â
+ * ï¿½Ã°ï¿½ ï¿½×·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
  */
 
 package com.hb.app.tong;
 
+import gps.tong.Contact;
+import gps.tong.GpsInfo;
+import gps.tong.gpsDBHelper;
+import gps.tong.gpsadpater;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import org.achartengine.ChartFactory;
-import org.achartengine.GraphicalView;
-import org.achartengine.chart.BarChart.Type;
-import org.achartengine.model.CategorySeries;
-import org.achartengine.model.XYMultipleSeriesDataset;
-import org.achartengine.renderer.SimpleSeriesRenderer;
-import org.achartengine.renderer.XYMultipleSeriesRenderer;
-
-import android.content.ContentResolver;
-import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.Paint.Align;
+import android.content.Intent;
 import android.os.Bundle;
-import android.provider.CallLog;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-
-import com.smartstat.info.DateInfo;
-import com.smartstat.info.Info;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
 
 public class MapFragment extends Fragment {
+	private Button btnShowLocation;
+	private Button btnShutdown;
+
+	private ListView listview;
 	
-	double total_duration = 0;
-	double total_call_count = 0;
-	double incall_count = 0;
-	double incall_duration = 0;
-	double outcall_count = 0;
-	double outcall_duration = 0;
-	double miss_count = 0;
-	double average_duration = 0;
-	double average_call_count = 0;
-	double t_value;
-	int t1_value;
-	String t_time;
-	GraphicalView gv;
-	GraphicalView hour_gv;
-	Date when;
-	DateInfo dateinfo = new DateInfo();
-	ArrayAdapter<CharSequence> chart_spin;
-	LinearLayout chartView;
+	private gpsDBHelper db;
+
+	private Double gps1;
+	private Double gps2;
+	private String date;
+
+	private GpsInfo gps;
+	
+	private List<Contact> list;
+	private Contact sitem;
+	gpsadpater adapter;
+	
+	Intent intent;
+	TimerTask testt;
+	Timer timert;
+	
+	private Handler gHandler;
+	private Runnable gRunnable;
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		return inflater.inflate(R.layout.fragment_map, container, false);
+		return inflater.inflate(R.layout.activity_gps, container, false);
 	}
 
 	/** Called when the activity is first created. */
@@ -70,118 +69,110 @@ public class MapFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 
-		ContentResolver cr = getActivity().getContentResolver();
-		Cursor cursor = cr.query(CallLog.Calls.CONTENT_URI, null, null, null,
-				CallLog.Calls.DATE + " DESC");
+		btnShowLocation = (Button) getView().findViewById(R.id.button1);
+		btnShutdown = (Button) getView().findViewById(R.id.button2);
 
-		ArrayList<Info> list = new ArrayList<Info>(); // Åë°èÁ¤º¸¸¦ µ¿Àû¸®½ºÆ®·Î °´Ã¼ »ı¼º
 
-		int nameidx = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME); // ÅëÈ­´ë»óÀÚ
-																		// ÀÌ¸§
-		int dateidx = cursor.getColumnIndex(CallLog.Calls.DATE); // ÅëÈ­ ½ÃÁ¡.
-																	// 1/1000ÃÊ
-																	// ´ÜÀ§ÀÇ Àı´ë½Ã°£
-		int numidx = cursor.getColumnIndex(CallLog.Calls.NUMBER); // ÀüÈ­¹øÈ£
-		int duridx = cursor.getColumnIndex(CallLog.Calls.DURATION); // ÅëÈ­½Ã°£
-		int typeidx = cursor.getColumnIndex(CallLog.Calls.TYPE); // ÅëÈ­Á¾·ù(¼ö½Å,¹ß½Å,ºÎÀçÁß)
-
-		boolean found = false; // °°Àº ÀÌ¸§À» Ã£À¸¸é ´©ÀûÈ½¼ö¸¦ Áõ°¡½ÃÅ²´Ù. Ã£Áö¸øÇÏ¸é ¸®½ºÆ®¿¡ Ãß°¡
-
-		StringBuilder result = new StringBuilder();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-
-		result.append("ÃÑ ±â·Ï °³¼ö : " + cursor.getCount() + "°³\n");
-
-		int where = 0; // list¿¡ ÇöÀç ÀÌ¸§°ªÀÌ ¾îµğ¿¡ ÀÖ´ÂÁö È®ÀÎ
-
-		while (cursor.moveToNext()) { // cursor°¡ ÀĞÁö ¸øÇÒ ¶§ ±îÁö ¹İº¹
-			// ÅëÈ­ ´ë»óÀÚ
-
-			Info temp = new Info();
-			Iterator<Info> it = list.iterator(); // iterator·Î º¯È¯
-
-			String name = cursor.getString(nameidx); // ÀÌ¸§À» ¹®ÀÚ¿­·Î º¯È¯
-
-			if (name == null) {
-				name = cursor.getString(numidx); // ÀÌ¸§ÀÌ ÀúÀåµÇÁö ¾ÊÀ¸¸é ¹øÈ£·Î ÀúÀå
-			}
-			// result.append(name);
-
-			temp.name = name;
-
-			found = false;
-			where = 0;
-			while (it.hasNext()) {
-				Info data = it.next();
-				if (data.name.equals(name)) { // list¿¡ ÀÖ´Â ¿ø¼Ò Áß ÀÌ¸§ÀÌ °°Àº °ÍÀ» Ã£À¸¸é
-					found = true;
-
-					/*
-					 * dataÀÇ ÁÖ¼Ò¸¦ temp¿¡ ÀúÀå½ÃÅ²´Ù µû¶ó¼­ temp¿¡¼­ ÇÊµå¸¦ ¿¬»êÇÏ¸é ÀÌ°Ô data¿¡¼­ µ¿½Ã¿¡
-					 * ¿¬»êµÇ´Â °Å¶û ¸¶Âù°¡Áö! ¤»¤» »ı°¢ÇÏÁöµµ ¸øÇÑ °Å¿´´Âµ¥ ¿ì¿Õ¤» ±» ¤»
-					 */
-
-					temp = data;
-					break;
-				}
-				where++;
-			}
-
-			// ÅëÈ­ ³¯Â¥
-			long date = cursor.getLong(dateidx);
-			when = new Date(date);
-			Date today = new Date();
-
-			// ÅëÈ­ Á¾·ù
-			int type = cursor.getInt(typeidx);
-
-			switch (type) {
-			case CallLog.Calls.INCOMING_TYPE:
-				// ¼ö½ÅÀüÈ­
-				total_call_count++;
-				incall_count++;
-				incall_duration += cursor.getInt(duridx);
-				total_duration += cursor.getInt(duridx);
-				temp.in_count++;
-				temp.in_dur += cursor.getInt(duridx);
-
-				temp.in_year = cursor.getLong(dateidx);
-				SimpleDateFormat t_format = new SimpleDateFormat("yyyy"); // ³â¸¸
-																			// Ãâ·ÂÇÏµµ·Ï
-				t_time = t_format.format(new Date(temp.in_year));
-				temp.in_year = Long.valueOf(t_time);
-
-				dateinfo.hour_in_dur[when.getHours()] += cursor.getInt(duridx);
-
-				break;
-			case CallLog.Calls.OUTGOING_TYPE:
-				// ¹ß½ÅÀüÈ­
-				total_call_count++;
-				outcall_count++;
-				outcall_duration += cursor.getInt(duridx);
-				temp.out_count++;
-				total_duration += cursor.getInt(duridx);
-				temp.out_dur += cursor.getInt(duridx);
-
-				dateinfo.hour_out_dur[when.getHours()] += cursor.getInt(duridx);
-				break;
-			case CallLog.Calls.MISSED_TYPE:
-				// ºÎÀçÁßÀüÈ­
-				total_call_count++;
-				miss_count++;
-				temp.miss_count++;
-				break;
-
-			}
-
+		db = new gpsDBHelper(getActivity(), null, 1);
 		
 
-
-		}
-
-		cursor.close();
-
+        list = new ArrayList<Contact>();
+        list = db.getAllContacts();
 		
+		adapter = new gpsadpater(getActivity(), list);
+		listview = (ListView) getView().findViewById(R.id.listView1);
+		listview.setAdapter(adapter);
+		
+
+        listview.setOnItemClickListener(new OnItemClickListener() {	 
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				int setpos = position + 1;
+				sitem = db.getContact(setpos);
+				
+				intent=new Intent("com.example.gpstest.recgps");
+				intent.putExtra("gps1",	sitem.gpsinfo1);
+				intent.putExtra("gps2", sitem.gpsinfo2);
+				startActivity(intent);
+			}
+		});
+		// GPS ì •ë³´ë¥¼ ë³´ì—¬ì£¼ê¸° ìœ„í•œ ì´ë²¤íŠ¸ í´ë˜ìŠ¤ ë“±ë¡
+		btnShowLocation.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View arg0) {
+				testtimer();
+			}
+		});
+		
+		btnShutdown.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View arg0) {
+				stoptimer();
+			}
+		});
+	
 	}
+	
+	public void testtimer(){
+		timert = new Timer();
+		gHandler = new Handler();
+		gRunnable = new Runnable(){
+			public void run() {
+				gpsdbreturn();
+			}
+		};
+		
+		testt = new TimerTask(){
+			public void run() {
+				gHandler.post(gRunnable);
+			}
+		};
+		timert = new Timer();
+		timert.scheduleAtFixedRate(testt, 500, 10000);
+	}
+	public void stoptimer(){
+		gHandler.removeCallbacks(gRunnable);
+		timert.cancel();
+	}
+	
+	
+	public void gpsdbreturn(){
+		gps = new GpsInfo(getActivity());
+		Date today = Calendar.getInstance().getTime();
+		SimpleDateFormat fdate = new SimpleDateFormat(
+				"yyyy-MM-dd HH:mm", Locale.KOREA);
+		// GPS ì‚¬ìš©ìœ ë¬´ ê°€ì ¸ì˜¤ê¸°
+		if (gps.isGetLocation()) {
+
+			double latitude = gps.getLatitude();
+			double longitude = gps.getLongitude();
+			gps1 = latitude;
+			gps2 = longitude;
+
+			date = fdate.format(today);
+			db.addContact(new Contact(date, gps1.toString(), gps2
+					.toString()));
+
+			Toast.makeText(getActivity().getApplicationContext(),
+					"ë‹¹ì‹ ì˜ ìœ„ì¹˜ - \nìœ„ë„: " + gps1 + "\nê²½ë„: " + gps2 + "\nì‹œê°„ : " + date,
+					Toast.LENGTH_LONG).show();
+		} else {
+			// GPS ë¥¼ ì‚¬ìš©í• ìˆ˜ ì—†ìœ¼ë¯€ë¡œ
+			gps.showSettingsAlert();
+		}
+	}
+
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		getMenuInflater().inflate(R.menu.main, menu);
+//		return true;
+//	}
+//
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		int id = item.getItemId();
+//		if (id == R.id.action_settings) {
+//			db.deleteAll();
+//			return true;
+//		}
+//		return super.onOptionsItemSelected(item);
+//	}
 
 }

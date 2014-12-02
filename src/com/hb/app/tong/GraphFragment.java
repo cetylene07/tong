@@ -1,5 +1,5 @@
 /*
- * ½Ã°£ ±×·¡ÇÁ Ãâ·Â
+ * ï¿½Ã°ï¿½ ï¿½×·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
  */
 
 package com.hb.app.tong;
@@ -38,90 +38,23 @@ import com.smartstat.info.DateInfo;
 import com.smartstat.info.Info;
 
 public class GraphFragment extends Fragment {
-	/*
-	 * callActivity¿¡ ÀÖ´Â µ¥ÀÌÅÍ¸¦ Àç »ç¿ëÇÏ±â À§ÇØ¼­ »ó¼Ó¹Þ¾Ò´Ù. callActivity¿¡´Â Activity¸¦ »ó¼Ó¹Þ±â ¶§¹®¿¡
-	 * ¿ø·¡ TimeActivity¿¡¼­ ¾²·Á´ø Activityµµ Æ÷ÇÔµÇ¾î ÀÖ¾î¼­ »ó¼Ó°¡´É
-	 */
-	/**
-	 * @uml.property  name="total_duration"
-	 */
 	double total_duration = 0;
-	/**
-	 * @uml.property  name="total_call_count"
-	 */
 	double total_call_count = 0;
-	/**
-	 * @uml.property  name="incall_count"
-	 */
 	double incall_count = 0;
-	/**
-	 * @uml.property  name="incall_duration"
-	 */
 	double incall_duration = 0;
-	/**
-	 * @uml.property  name="outcall_count"
-	 */
 	double outcall_count = 0;
-	/**
-	 * @uml.property  name="outcall_duration"
-	 */
 	double outcall_duration = 0;
-	/**
-	 * @uml.property  name="miss_count"
-	 */
 	double miss_count = 0;
-	/**
-	 * @uml.property  name="average_duration"
-	 */
 	double average_duration = 0;
-	/**
-	 * @uml.property  name="average_call_count"
-	 */
 	double average_call_count = 0;
-	/**
-	 * @uml.property  name="t_value"
-	 */
 	double t_value;
-	/**
-	 * @uml.property  name="t1_value"
-	 */
 	int t1_value;
-	/**
-	 * @uml.property  name="t_time"
-	 */
 	String t_time;
-
-	/**
-	 * @uml.property  name="gv"
-	 * @uml.associationEnd  
-	 */
 	GraphicalView gv;
-	/**
-	 * @uml.property  name="hour_gv"
-	 * @uml.associationEnd  
-	 */
 	GraphicalView hour_gv;
-	/**
-	 * @uml.property  name="when"
-	 */
 	Date when;
-
-	/**
-	 * @uml.property  name="dateinfo"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
 	DateInfo dateinfo = new DateInfo();
-
-	/**
-	 * @uml.property  name="chart_spin"
-	 * @uml.associationEnd  
-	 */
 	ArrayAdapter<CharSequence> chart_spin;
-
-	/**
-	 * @uml.property  name="chartView"
-	 * @uml.associationEnd  readOnly="true"
-	 */
 	LinearLayout chartView;
 
 	@Override
@@ -135,45 +68,42 @@ public class GraphFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		// setContentView(R.layout.activity_graph);
-		// setListAdapter(new SpeechListAdapter(getActivity()));
 
 		ContentResolver cr = getActivity().getContentResolver();
 		Cursor cursor = cr.query(CallLog.Calls.CONTENT_URI, null, null, null,
 				CallLog.Calls.DATE + " DESC");
 
-		ArrayList<Info> list = new ArrayList<Info>(); // Åë°èÁ¤º¸¸¦ µ¿Àû¸®½ºÆ®·Î °´Ã¼ »ý¼º
+		ArrayList<Info> list = new ArrayList<Info>(); 
 
-		int nameidx = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME); // ÅëÈ­´ë»óÀÚ
-																		// ÀÌ¸§
-		int dateidx = cursor.getColumnIndex(CallLog.Calls.DATE); // ÅëÈ­ ½ÃÁ¡.
-																	// 1/1000ÃÊ
-																	// ´ÜÀ§ÀÇ Àý´ë½Ã°£
-		int numidx = cursor.getColumnIndex(CallLog.Calls.NUMBER); // ÀüÈ­¹øÈ£
-		int duridx = cursor.getColumnIndex(CallLog.Calls.DURATION); // ÅëÈ­½Ã°£
-		int typeidx = cursor.getColumnIndex(CallLog.Calls.TYPE); // ÅëÈ­Á¾·ù(¼ö½Å,¹ß½Å,ºÎÀçÁß)
+		int nameidx = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME); 
+																		
+		int dateidx = cursor.getColumnIndex(CallLog.Calls.DATE); 
+																	
+		int numidx = cursor.getColumnIndex(CallLog.Calls.NUMBER); 
+		int duridx = cursor.getColumnIndex(CallLog.Calls.DURATION); 
+		int typeidx = cursor.getColumnIndex(CallLog.Calls.TYPE); 
 
-		boolean found = false; // °°Àº ÀÌ¸§À» Ã£À¸¸é ´©ÀûÈ½¼ö¸¦ Áõ°¡½ÃÅ²´Ù. Ã£Áö¸øÇÏ¸é ¸®½ºÆ®¿¡ Ãß°¡
+		boolean found = false; 
 
 		StringBuilder result = new StringBuilder();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
-		result.append("ÃÑ ±â·Ï °³¼ö : " + cursor.getCount() + "°³\n");
+		result.append("ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : " + cursor.getCount() + "ï¿½ï¿½\n");
 
-		int where = 0; // list¿¡ ÇöÀç ÀÌ¸§°ªÀÌ ¾îµð¿¡ ÀÖ´ÂÁö È®ÀÎ
+		int where = 0;
 
-		while (cursor.moveToNext()) { // cursor°¡ ÀÐÁö ¸øÇÒ ¶§ ±îÁö ¹Ýº¹
-			// ÅëÈ­ ´ë»óÀÚ
+		while (cursor.moveToNext()) { 
+
 
 			Info temp = new Info();
-			Iterator<Info> it = list.iterator(); // iterator·Î º¯È¯
+			Iterator<Info> it = list.iterator(); 
 
-			String name = cursor.getString(nameidx); // ÀÌ¸§À» ¹®ÀÚ¿­·Î º¯È¯
+			String name = cursor.getString(nameidx); 
 
 			if (name == null) {
-				name = cursor.getString(numidx); // ÀÌ¸§ÀÌ ÀúÀåµÇÁö ¾ÊÀ¸¸é ¹øÈ£·Î ÀúÀå
+				name = cursor.getString(numidx); 
 			}
-			// result.append(name);
+
 
 			temp.name = name;
 
@@ -181,31 +111,24 @@ public class GraphFragment extends Fragment {
 			where = 0;
 			while (it.hasNext()) {
 				Info data = it.next();
-				if (data.name.equals(name)) { // list¿¡ ÀÖ´Â ¿ø¼Ò Áß ÀÌ¸§ÀÌ °°Àº °ÍÀ» Ã£À¸¸é
+				if (data.name.equals(name)) { 
 					found = true;
 
-					/*
-					 * dataÀÇ ÁÖ¼Ò¸¦ temp¿¡ ÀúÀå½ÃÅ²´Ù µû¶ó¼­ temp¿¡¼­ ÇÊµå¸¦ ¿¬»êÇÏ¸é ÀÌ°Ô data¿¡¼­ µ¿½Ã¿¡
-					 * ¿¬»êµÇ´Â °Å¶û ¸¶Âù°¡Áö! ¤»¤» »ý°¢ÇÏÁöµµ ¸øÇÑ °Å¿´´Âµ¥ ¿ì¿Õ¤» ±» ¤»
-					 */
-
+				
 					temp = data;
 					break;
 				}
 				where++;
 			}
 
-			// ÅëÈ­ ³¯Â¥
 			long date = cursor.getLong(dateidx);
 			when = new Date(date);
 			Date today = new Date();
 
-			// ÅëÈ­ Á¾·ù
 			int type = cursor.getInt(typeidx);
 
 			switch (type) {
 			case CallLog.Calls.INCOMING_TYPE:
-				// ¼ö½ÅÀüÈ­
 				total_call_count++;
 				incall_count++;
 				incall_duration += cursor.getInt(duridx);
@@ -214,8 +137,7 @@ public class GraphFragment extends Fragment {
 				temp.in_dur += cursor.getInt(duridx);
 
 				temp.in_year = cursor.getLong(dateidx);
-				SimpleDateFormat t_format = new SimpleDateFormat("yyyy"); // ³â¸¸
-																			// Ãâ·ÂÇÏµµ·Ï
+				SimpleDateFormat t_format = new SimpleDateFormat("yyyy"); 
 				t_time = t_format.format(new Date(temp.in_year));
 				temp.in_year = Long.valueOf(t_time);
 
@@ -223,7 +145,7 @@ public class GraphFragment extends Fragment {
 
 				break;
 			case CallLog.Calls.OUTGOING_TYPE:
-				// ¹ß½ÅÀüÈ­
+	
 				total_call_count++;
 				outcall_count++;
 				outcall_duration += cursor.getInt(duridx);
@@ -234,7 +156,7 @@ public class GraphFragment extends Fragment {
 				dateinfo.hour_out_dur[when.getHours()] += cursor.getInt(duridx);
 				break;
 			case CallLog.Calls.MISSED_TYPE:
-				// ºÎÀçÁßÀüÈ­
+	
 				total_call_count++;
 				miss_count++;
 				temp.miss_count++;
@@ -242,10 +164,9 @@ public class GraphFragment extends Fragment {
 
 			}
 
-			// if (when.getMonth() == today.getMonth()) {
 			if (true) {
 				switch (when.getDay()) {
-				case 0: // ÀÏ¿äÀÏ
+				case 0: 
 					if (cursor.getInt(typeidx) == CallLog.Calls.INCOMING_TYPE) {
 
 						dateinfo.sun_in_dur += cursor.getInt(duridx);
@@ -253,7 +174,7 @@ public class GraphFragment extends Fragment {
 						dateinfo.sun_out_dur += cursor.getInt(duridx);
 					}
 					break;
-				case 1: // ¿ù¿äÀÏ
+				case 1: 
 					if (cursor.getInt(typeidx) == CallLog.Calls.INCOMING_TYPE) {
 
 						dateinfo.mon_in_dur += cursor.getInt(duridx);
@@ -261,7 +182,7 @@ public class GraphFragment extends Fragment {
 						dateinfo.mon_out_dur += cursor.getInt(duridx);
 					}
 					break;
-				case 2: // È­¿äÀÏ
+				case 2:
 					if (cursor.getInt(typeidx) == CallLog.Calls.INCOMING_TYPE) {
 
 						dateinfo.tus_in_dur += cursor.getInt(duridx);
@@ -269,7 +190,7 @@ public class GraphFragment extends Fragment {
 						dateinfo.tus_out_dur += cursor.getInt(duridx);
 					}
 					break;
-				case 3: // ¼ö¿äÀÏ
+				case 3: // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					if (cursor.getInt(typeidx) == CallLog.Calls.INCOMING_TYPE) {
 
 						dateinfo.wed_in_dur += cursor.getInt(duridx);
@@ -277,7 +198,7 @@ public class GraphFragment extends Fragment {
 						dateinfo.wed_out_dur += cursor.getInt(duridx);
 					}
 					break;
-				case 4: // ¸ñ¿äÀÏ
+				case 4: // ï¿½ï¿½ï¿½ï¿½ï¿½
 					if (cursor.getInt(typeidx) == CallLog.Calls.INCOMING_TYPE) {
 
 						dateinfo.thr_in_dur += cursor.getInt(duridx);
@@ -285,7 +206,7 @@ public class GraphFragment extends Fragment {
 						dateinfo.thr_out_dur += cursor.getInt(duridx);
 					}
 					break;
-				case 5: // ±Ý¿äÀÏ
+				case 5: // ï¿½Ý¿ï¿½ï¿½ï¿½
 					if (cursor.getInt(typeidx) == CallLog.Calls.INCOMING_TYPE) {
 
 						dateinfo.fri_in_dur += cursor.getInt(duridx);
@@ -293,7 +214,7 @@ public class GraphFragment extends Fragment {
 						dateinfo.fri_out_dur += cursor.getInt(duridx);
 					}
 					break;
-				case 6: // Åä¿äÀÏ
+				case 6: // ï¿½ï¿½ï¿½ï¿½ï¿½
 					if (cursor.getInt(typeidx) == CallLog.Calls.INCOMING_TYPE) {
 
 						dateinfo.sat_in_dur += cursor.getInt(duridx);
@@ -305,18 +226,17 @@ public class GraphFragment extends Fragment {
 			}
 
 			if (found == false) {
-				list.add(temp); // »õ·Î Ãß°¡
+				list.add(temp); // ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
 			}
 
 		}
 
 		cursor.close();
 
-		// Ç¥½ÃÇÒ ¼öÄ¡°ª
+
 		List<int[]> values = new ArrayList<int[]>();
 
-		// values.add(new int[] { 1, 25, 3, 46, 5, 76, 7 });
-		// values.add(new int[] {11,22,63,4,55,66,77});
+
 		values.add(new int[] { dateinfo.sun_in_dur, dateinfo.mon_in_dur,
 				dateinfo.tus_in_dur, dateinfo.wed_in_dur, dateinfo.thr_in_dur,
 				dateinfo.fri_in_dur, dateinfo.sat_in_dur });
@@ -326,34 +246,34 @@ public class GraphFragment extends Fragment {
 				dateinfo.thr_out_dur, dateinfo.fri_out_dur,
 				dateinfo.sat_out_dur });
 
-		// ½Ã°£º° µ¥ÀÌÅÍ Ãß°¡
+		// ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
 		List<int[]> hour_values = new ArrayList<int[]>();
 		hour_values.add(dateinfo.hour_in_dur);
 		hour_values.add(dateinfo.hour_out_dur);
 
-		// ±×·¡ÇÁ Ãâ·ÂÀ» À§ÇÑ ±×·¡ÇÁ ¼Ó¼º ÁöÁ¤ °´Ã¼
+		// ï¿½×·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½×·ï¿½ï¿½ï¿½ ï¿½Ó¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼
 		XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
 
 		XYMultipleSeriesRenderer hour_renderer = new XYMultipleSeriesRenderer();
 
-		// »ó´Ü Ç¥½Ã Á¦¸ñ°ú Å©±â
-		// renderer.setChartTitle("¿äÀÏº° ÅëÈ­±æÀÌ");
+		// ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½
+		// renderer.setChartTitle("ï¿½ï¿½ï¿½Ïºï¿½ ï¿½ï¿½È­ï¿½ï¿½ï¿½ï¿½");
 		renderer.setChartTitleTextSize(40);
 
-		// ºÐ·ù¿¡ ´ëÇÑ ÀÌ¸§
+		// ï¿½Ð·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½
 		String[] titles = new String[] { getString(R.string.receivingTime),
 				getString(R.string.outGoingTime) };
 		String[] test_titles = new String[] {
 				getString(R.string.receivingTime),
 				getString(R.string.outGoingTime) };
 
-		// Ç×¸ñÀ» Ç¥½ÃÇÏ´Â µ¥ »ç¿ëµÉ »ö»ó°ª
+		// ï¿½×¸ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		int[] colors = new int[] { Color.argb(100, 55, 128, 71),
 				Color.argb(100, 40, 55, 142) };
 
 		// int[] test_colors = new int[] { Color.argb(100, 94, 154, 210) };
 
-		// ºÐ·ù¸í ±ÛÀÚ Å©±â ¹× °¢ »ö»ó ÁöÁ¤
+		// ï¿½Ð·ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		// renderer.setLabelsTextSize(35);
 		// hour_renderer.setLabelsTextSize(75);
 		// renderer.setChartTitleTextSize(30);
@@ -370,13 +290,13 @@ public class GraphFragment extends Fragment {
 			hour_renderer.addSeriesRenderer(r);
 		}
 
-		// X,Y Ãà Ç×¸ñÀÌ¸§°ú ±ÛÀÚ Å©±â
-		// renderer.setXTitle("¿äÀÏ");
-		// renderer.setYTitle("±æÀÌ(ÃÊ)");
+		// X,Y ï¿½ï¿½ ï¿½×¸ï¿½ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½
+		// renderer.setXTitle("ï¿½ï¿½ï¿½ï¿½");
+		// renderer.setYTitle("ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½)");
 		renderer.setAxisTitleTextSize(25);
 		hour_renderer.setAxisTitleTextSize(18);
 
-		// ¼öÄ¡°ª ±ÛÀÚ Å©±â , XÃà ÃÖ¼Ò ÃÖ´ë°ª , YÃà ÃÖ¼Ò ÃÖ´ë°ª ¼³Á¤
+		// ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ , Xï¿½ï¿½ ï¿½Ö¼ï¿½ ï¿½Ö´ë°ª , Yï¿½ï¿½ ï¿½Ö¼ï¿½ ï¿½Ö´ë°ª ï¿½ï¿½ï¿½ï¿½
 		renderer.setLabelsTextSize(14);
 		renderer.setXAxisMin(0.5);
 		renderer.setXAxisMax(7.5);
@@ -387,7 +307,7 @@ public class GraphFragment extends Fragment {
 		hour_renderer.setXAxisMax(24.5);
 		hour_renderer.setYAxisMin(0.5);
 
-		// ¾ÈÆ¼¾Ë·¹ÀÌ½Ì ¼³Á¤
+		// ï¿½ï¿½Æ¼ï¿½Ë·ï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		renderer.setAntialiasing(true);
 
 		renderer.setXLabels(0);
@@ -404,45 +324,45 @@ public class GraphFragment extends Fragment {
 		for (int i = 0; i < 24; i++)
 			hour_renderer.addXTextLabel(i, i + "");
 
-		// XÃà°ú YÃàÀÇ »ö»ó ÁöÁ¤
+		// Xï¿½ï¿½ï¿½ Yï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		renderer.setAxesColor(Color.BLACK);
 
-		// »ó´ÜÁ¦¸ñ, X,YÃà Á¦¸ñ, ¼öÄ¡°ªÀÇ ±ÛÀÚ »ö»ó
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, X,Yï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		renderer.setLabelsColor(Color.BLACK);
 
-		// XÃà Ç¥½Ã °£°Ý
+		// Xï¿½ï¿½ Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		// renderer.setXLabels(7);
 		//
-		// YÃà Ç¥½Ã °£°Ý
+		// Yï¿½ï¿½ Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		// renderer.setYLabels(5);
 
-		// X,YÃà Á¤·Ä¹æÇâ
+		// X,Yï¿½ï¿½ ï¿½ï¿½ï¿½Ä¹ï¿½ï¿½ï¿½
 		renderer.setXLabelsAlign(Align.LEFT);
 		renderer.setYLabelsAlign(Align.LEFT);
 		hour_renderer.setXLabelsAlign(Align.LEFT);
 		hour_renderer.setYLabelsAlign(Align.LEFT);
 
-		// X,YÃà ½ºÅ©·Ñ ¿©ºÎ ON/OFF
+		// X,Yï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ON/OFF
 		renderer.setPanEnabled(false, false);
 		hour_renderer.setPanEnabled(false, false);
 
-		// ZOOM±â´É ON/OFF
+		// ZOOMï¿½ï¿½ï¿½ ON/OFF
 		renderer.setZoomEnabled(false, false);
 		hour_renderer.setZoomEnabled(false, false);
 
-		// ZOOM ºñÀ²
+		// ZOOM ï¿½ï¿½ï¿½ï¿½
 		renderer.setZoomRate(1.0f);
 		hour_renderer.setZoomRate(1.0f);
 
-		// ¸·´ë°£ °£°Ý
+		// ï¿½ï¿½ï¿½ë°£ ï¿½ï¿½ï¿½ï¿½
 		renderer.setBarSpacing(0.5f);
 		hour_renderer.setBarSpacing(0.5f);
 
-		// ¹è°æ »ö»ó
+		// ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		 renderer.setMarginsColor(Color.parseColor("#ffffff"));
 		 hour_renderer.setMarginsColor(Color.parseColor("#ffffff"));
 
-		// ¼³Á¤ Á¤º¸ ¼³Á¤
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
 		for (int i = 0; i < titles.length; i++) {
 			CategorySeries series = new CategorySeries(titles[i]);
@@ -472,7 +392,7 @@ public class GraphFragment extends Fragment {
 				hour_renderer, Type.DEFAULT);
 		//
 
-		// ½ºÇÇ³Ê
+		// ï¿½ï¿½ï¿½Ç³ï¿½
 		Spinner spin = (Spinner) getView().findViewById(R.id.chart_spinner);
 		spin.setPrompt("Choice Option");
 		chart_spin = ArrayAdapter.createFromResource(getActivity(),
@@ -495,7 +415,7 @@ public class GraphFragment extends Fragment {
 
 				switch (position) {
 				case 0:
-					// // ±×·¡ÇÁ¸¦ Layout¿¡ Ãß°¡
+					// // ï¿½×·ï¿½ï¿½ï¿½ï¿½ï¿½ Layoutï¿½ï¿½ ï¿½ß°ï¿½
 					chartView.removeAllViews();
 					// hourChart.setVisibility(View.INVISIBLE);
 					// dayChart.setVisibility(View.VISIBLE);
@@ -505,7 +425,7 @@ public class GraphFragment extends Fragment {
 					break;
 
 				case 1:
-					// // ±×·¡ÇÁ¸¦ Layout¿¡ Ãß°¡
+					// // ï¿½×·ï¿½ï¿½ï¿½ï¿½ï¿½ Layoutï¿½ï¿½ ï¿½ß°ï¿½
 					chartView.removeAllViews();
 					// dayChart.setVisibility(View.INVISIBLE);
 					// hourChart.setVisibility(View.VISIBLE);
