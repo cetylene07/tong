@@ -54,10 +54,11 @@ public class DbOpenHelper {
 	}
 	
 	// Insert DB
-	public long insertColumn(String callID, String name, String date, String duration, String type)	{
+	public long insertColumn(String callID, String name, String number, String date, String duration, String type)	{
 		ContentValues values = new ContentValues();
 		values.put(DataBases.CreateDB.callID, callID);
 		values.put(DataBases.CreateDB.NAME, name);
+		values.put(DataBases.CreateDB.NUMBER, number);
 		values.put(DataBases.CreateDB.DATE, date);
 		values.put(DataBases.CreateDB.DURATION, duration);
 		values.put(DataBases.CreateDB.TYPE, type);
@@ -66,10 +67,11 @@ public class DbOpenHelper {
 	}
 	
 	// Update DB
-	public boolean updateColumn(long id, String callID, String name, String date, String duration, String type)	{
+	public boolean updateColumn(long id, String callID, String name, String number, String date, String duration, String type)	{
 		ContentValues values = new ContentValues();
 		values.put(DataBases.CreateDB.callID, callID);
 		values.put(DataBases.CreateDB.NAME, name);
+		values.put(DataBases.CreateDB.NUMBER, number);
 		values.put(DataBases.CreateDB.DATE, date);
 		values.put(DataBases.CreateDB.DURATION, duration);
 		values.put(DataBases.CreateDB.TYPE, type);
@@ -100,7 +102,7 @@ public class DbOpenHelper {
 	}
 	
 	public Cursor getAllSums()	{
-		String query = "SELECT NAME, SUM(DURATION) FROM " + DataBases.CreateDB._TABLENAME + " GROUP BY NAME HAVING SUM(DURATION)>0 ORDER BY SUM(DURATION) DESC";
+		String query = "SELECT NAME, NUMBER, SUM(DURATION) FROM " + DataBases.CreateDB._TABLENAME + " GROUP BY NAME HAVING SUM(DURATION)>0 ORDER BY SUM(DURATION) DESC";
 		Log.d("query", "getAllSums has completed!");
 		return mDB.rawQuery(query, null);
 	}
