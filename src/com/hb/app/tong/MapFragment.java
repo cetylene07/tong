@@ -14,12 +14,15 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import model.tong.Common;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -68,10 +71,20 @@ public class MapFragment extends Fragment {
 		btnShowLocation = (Button) getView().findViewById(R.id.button1);
 		btnShutdown = (Button) getView().findViewById(R.id.button2);
 
-
-		db = new gpsDBHelper(getActivity(), null, 1);
+		Button btnTest = (Button) getView().findViewById(R.id.button3);
+		btnTest.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				//test
+				db.getGpsContact();
+			}
+		});
+		
+		db = new gpsDBHelper(getActivity(), null, 2);
 		
 
+		
         list = new ArrayList<Contact>();
         list = db.getAllContacts();
 		
@@ -133,7 +146,7 @@ public class MapFragment extends Fragment {
 		gps = new GpsInfo(getActivity());
 		Date today = Calendar.getInstance().getTime();
 		SimpleDateFormat fdate = new SimpleDateFormat(
-				"yyyy-MM-dd HH:mm", Locale.KOREA);
+				Common.dateFormat, Locale.KOREA);
 		// GPS 사용유무 가져오기
 		if (gps.isGetLocation()) {
 

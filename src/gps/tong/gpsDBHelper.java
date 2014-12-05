@@ -3,15 +3,19 @@ package gps.tong;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.tong.DataBases;
+import model.tong.DbOpenHelper;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class gpsDBHelper extends SQLiteOpenHelper {
-
+	Context context;
 	public static final String tableName = "gpsinfo";
 	public static final String colID = "_id";
 	public static final String colDate = "date";
@@ -19,8 +23,12 @@ public class gpsDBHelper extends SQLiteOpenHelper {
 	public static final String colGpsinfo2 = "gpsinfo2";
 
 	public gpsDBHelper(Context context, CursorFactory factory, int version) {
+		
 		super(context, tableName + ".db", factory, version);
+		this.context = context;
 	}
+	
+
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
@@ -143,6 +151,45 @@ public class gpsDBHelper extends SQLiteOpenHelper {
 
 		// return count
 		return cursor.getCount();
+	}
+	
+	
+	public Contact getGpsContact()	{
+		Contact contact = new Contact();
+		DbOpenHelper mdbOpenHelper = new DbOpenHelper(context);
+		SQLiteDatabase gpsdb = this.getReadableDatabase();
+		Cursor c = mdbOpenHelper.mDB.rawQuery("SELECT date FROM calldb", null);
+		c.moveToFirst();
+		int t = 0;
+		do	{
+			if(t++ > 10)
+				break;
+			
+			String calldate = c.getString(c.getColumnIndex(DataBases.CreateDB.DATE));
+			Cursor gpsCursor = gpsdb.rawQuery("SELECT * FROM gpsinfo ", null);
+			gpsCursor.moveToFirst();
+			String gpsdate = gpsCursor.getString(gpsCursor.getColumnIndex(gpsDBHelper.colDate));
+			Log.i("date", "======================================");
+			Log.i("date", "calldate : " + calldate + "// gpsdate : " + gpsdate);
+			Log.i("date", "======================================");
+		}while(c.moveToNext());
+		
+		gpsdb.close();
+		return contact;
+	}
+	
+	public int getGps() {
+		String countQuery = "SELECT  * FROM " + tableName;
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(countQuery, null);
+//		cursor.close();
+
+		// return count
+		return cursor.getCount();
+	}
+	
+	public void closeDB()	{
+		this.close();
 	}
 
 }

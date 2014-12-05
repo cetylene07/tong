@@ -19,11 +19,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.smartstat.info.ContactInfo;
 import com.smartstat.info.Info;
 
-public class MyListAdapter extends BaseAdapter implements OnItemClickListener {
+public class MyListAdapter extends BaseAdapter{
 	Context context;
 	LayoutInflater Inflater;
 	ArrayList<Info> arSrc;
@@ -134,10 +135,6 @@ public class MyListAdapter extends BaseAdapter implements OnItemClickListener {
 		return convertView;
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-	}
 
 	public void toggle(int position) {
 		// mExpanded[position] = !mExpanded[position];

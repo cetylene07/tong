@@ -1,5 +1,7 @@
 package com.hb.app.tong;
 
+import gps.tong.gpsDBHelper;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -9,7 +11,6 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.CallLog;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.smartstat.info.Info;
 
@@ -79,6 +81,10 @@ public class CallListFragment extends Fragment {
 						@Override
 						public void onItemClick(AdapterView<?> arg0, View arg1,
 								int position, long arg3) {
+							Toast.makeText(getActivity(), position+"", Toast.LENGTH_SHORT).show();
+							gpsDBHelper g = new gpsDBHelper(getActivity(), null, 2);
+							Log.i("gps",  "gpsContactCount : " + g.getGps());
+							g.closeDB();
 							itemPosition = position;
 						}
 

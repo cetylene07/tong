@@ -4,10 +4,13 @@
 
 package com.hb.app.tong;
 
+import gps.tong.gpsDBHelper;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import model.tong.Common;
 import model.tong.DataBases;
 import model.tong.DbOpenHelper;
 import android.app.ActionBar;
@@ -201,8 +204,8 @@ public class TongActivity extends FragmentActivity implements
 			int duridx = cursor.getColumnIndex(CallLog.Calls.DURATION);
 			int typeidx = cursor.getColumnIndex(CallLog.Calls.TYPE);
 
-			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd HH:mm");
-
+			SimpleDateFormat formatter = new SimpleDateFormat(Common.dateFormat);
+//			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 			cursor.moveToFirst();
 			do {
@@ -276,5 +279,13 @@ public class TongActivity extends FragmentActivity implements
 						Toast.LENGTH_SHORT).show();
 			}
 		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		gpsDBHelper g = new gpsDBHelper(getApplicationContext(), null, 1);
+		g.close();
+		super.onDestroy();
 	}
 }
