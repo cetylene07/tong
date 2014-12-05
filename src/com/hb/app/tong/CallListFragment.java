@@ -29,46 +29,13 @@ import com.smartstat.info.Info;
 
 public class CallListFragment extends Fragment {
 
-	ArrayList<Info> list = new ArrayList<Info>();
 	ArrayList<Info> temp_list = new ArrayList<Info>();
-	double total_dur = 0;
-	double total_incall_count = 0;
-	double total_outcall_count = 0;
-	double total_average_in_dur = 0;
-	double total_average_out_dur = 0;
-	double total_average_sum_dur = 0;
-	double total_indur = 0;
-	double total_outdur = 0;
-	double total_miss = 0;
-	double temp_value;
-	int jj;
-	boolean uri_found = false;
-
-	int tmp1;
-	String name;
-	String number;
-	long date;
-	String sdate;
-
-	ArrayAdapter<CharSequence> adspin;
-
+	ArrayAdapter<CharSequence> adspin;	// 스피너 관련 변수
 	LinearLayout linear;
-
-	final static int itemView = 0;
 	static int itemPosition = 0;
-
-	private DbOpenHelper mDbOpenHelper;
 
 	// adapterView is a sort of CustomView
 	public MyListAdapter adapterView = null;
-
-	final String[] CONTACTS_PROJECTION = new String[] {
-			ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
-			ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
-
-	};
-	
-	
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -84,24 +51,15 @@ public class CallListFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 
-		// fix duplicate data when resume activity
-		list.clear();
-
 		linear = (LinearLayout) View.inflate(getActivity(), R.layout.item_view,
 				null);
 
 		this.buttonControl(); // 월 이동하는 버튼 함수
 
 		ContentResolver cr = getActivity().getContentResolver();
-
-		String name = null;
-
-		Cursor cursor = cr.query(CallLog.Calls.CONTENT_URI, null, null, null,
-				CallLog.Calls.DATE + " DESC");
-
+		Cursor cursor = cr.query(CallLog.Calls.CONTENT_URI, null, null, null,null);
 
 		if (cursor.moveToNext()) {
-
 
 			// 스피너 이벤트
 			Spinner spin = (Spinner) getView().findViewById(R.id.call_spinner1);
@@ -112,27 +70,23 @@ public class CallListFragment extends Fragment {
 			spin.setAdapter(adspin);
 			spin.setOnItemSelectedListener(new OnItemSelectedListener() {
 
+				// 스피너 선택 리스너
 				public void onItemSelected(AdapterView<?> parent, View view,
 						int position, long id) {
-
-					String s_value;
 
 					OnItemClickListener listener = new OnItemClickListener() {
 
 						@Override
 						public void onItemClick(AdapterView<?> arg0, View arg1,
 								int position, long arg3) {
-
 							itemPosition = position;
 						}
 
 					}; 
 					
-					
 					ListView MyList;
 					DbOpenHelper mDbOpenHelper = new DbOpenHelper(getActivity().getApplicationContext());
 					mDbOpenHelper = new DbOpenHelper(getActivity());
-					
 					Cursor allColumnsCursor = mDbOpenHelper.getAllSums();
 					
 					int ididx = allColumnsCursor.getColumnIndex(DataBases.CreateDB.callID);
@@ -170,7 +124,6 @@ public class CallListFragment extends Fragment {
 						temp_list.clear();						
 						allColumnsCursor = mDbOpenHelper.getAllIncalls();
 						
-						
 						if(allColumnsCursor.moveToFirst())	{
 							Log.d("count",  "getAllIncomes Count is " + allColumnsCursor.getCount());
 							do	{
@@ -195,7 +148,6 @@ public class CallListFragment extends Fragment {
 
 						temp_list.clear();						
 						allColumnsCursor = mDbOpenHelper.getAllOutcalls();
-						
 						
 						if(allColumnsCursor.moveToFirst())	{
 							Log.d("count",  "getAllOutcomes Count is " + allColumnsCursor.getCount());

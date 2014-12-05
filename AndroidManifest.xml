@@ -7,7 +7,7 @@
     <!-- 안드로이드 지원버전  최소 : 4.0.3 타겟 : 4.0.4 최대 : 5.0 -->
     <uses-sdk
         android:maxSdkVersion="21"
-        android:minSdkVersion="15"
+        android:minSdkVersion="16"
         android:targetSdkVersion="16" />
 
     <!-- 퍼미션을 설정하는 곳 -->

@@ -1,7 +1,3 @@
-/*
- * �ð� �׷��� ���
- */
-
 package com.hb.app.tong;
 
 import gps.tong.Contact;
