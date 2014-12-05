@@ -9,7 +9,17 @@
         android:id="@+id/call_image"
         android:layout_width="?android:attr/listPreferredItemHeight"
         android:layout_height="?android:attr/listPreferredItemHeight"
-        android:src="@drawable/ic_contact_picture_holo_light" />
+        android:src="@drawable/ic_contact_picture_holo_light" 
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/call_rank"
+        android:layout_width="?android:attr/listPreferredItemHeight"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:fontFamily="sans-serif-light"
+        android:text="1"
+        android:gravity="center"
+        android:textSize="50dp" />
 
     <TextView
         android:id="@+id/call_value"
@@ -17,7 +27,7 @@
         android:layout_height="26dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/call_image"
+        android:layout_toRightOf="@+id/call_rank"
         android:ellipsize="marquee"
         android:fontFamily="sans-serif-light"
         android:paddingLeft="@dimen/listview_item_padding"
@@ -43,6 +53,5 @@
         android:singleLine="true"
         android:text="안드로"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
 
 </RelativeLayout>

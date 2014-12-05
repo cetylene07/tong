@@ -91,6 +91,7 @@ public class CallListFragment extends Fragment {
 					
 					int ididx = allColumnsCursor.getColumnIndex(DataBases.CreateDB.callID);
 					int nameidx = allColumnsCursor.getColumnIndex(DataBases.CreateDB.NAME);
+					int numberidx = allColumnsCursor.getColumnIndex(DataBases.CreateDB.NUMBER);
 					int duridx = allColumnsCursor.getColumnIndex("SUM(DURATION)");
 					
 					switch (position) {					
@@ -103,6 +104,7 @@ public class CallListFragment extends Fragment {
 							do	{
 								Info item = new Info();
 								item.name = allColumnsCursor.getString(nameidx);
+								item.number = allColumnsCursor.getString(numberidx);
 								item.sum_dur = Integer.parseInt(allColumnsCursor.getString(duridx));
 								temp_list.add(item);
 //								Log.d("test","ID:"+ "--" + " NAME : " + allColumnsCursor.getString(nameidx) + " DURATION : " + allColumnsCursor.getString(duridx) );
@@ -129,6 +131,7 @@ public class CallListFragment extends Fragment {
 							do	{
 								Info item = new Info();
 								item.name = allColumnsCursor.getString(nameidx);
+								item.number = allColumnsCursor.getString(numberidx);
 								item.in_dur = Integer.parseInt(allColumnsCursor.getString(duridx));
 								temp_list.add(item);
 //								Log.d("test","ID:"+ "--" + " NAME : " + allColumnsCursor.getString(nameidx) + " DURATION : " + allColumnsCursor.getString(duridx) );
@@ -154,6 +157,7 @@ public class CallListFragment extends Fragment {
 							do	{
 								Info item = new Info();
 								item.name = allColumnsCursor.getString(nameidx);
+								item.number = allColumnsCursor.getString(numberidx);
 								item.out_dur = Integer.parseInt(allColumnsCursor.getString(duridx));
 								temp_list.add(item);
 //								Log.d("test","ID:"+ "--" + " NAME : " + allColumnsCursor.getString(nameidx) + " DURATION : " + allColumnsCursor.getString(duridx) );

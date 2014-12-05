@@ -7,7 +7,8 @@ package com.smartstat.info;
 
 
 public class Info {
-	public String name; 					
+	public String name; 	// 저장된 이름 ( 없으면 전화번호 )
+	public String number;	//	순수 전화번호
 	public int rank;						
 	public int in_count; 				
 	public int in_dur; 					

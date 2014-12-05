@@ -1,5 +1,5 @@
 /*
- * ó�� ����ȭ��
+ * 처占쏙옙 占쏙옙占쏙옙화占쏙옙
  */
 
 package com.hb.app.tong;
@@ -23,6 +23,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -81,7 +83,12 @@ public class TongActivity extends FragmentActivity implements
 		/*
 		 * Call 데이터 베이스를 오픈 DB 없으면 새로 생성하고 DB 있으면 그거 불러 오도록 하는 dbOpen 함수
 		 */
+		long start = System.currentTimeMillis();
 		this.dbOpen();
+		long end = System.currentTimeMillis();
+		Log.i("time", "==========================================");
+		Log.i("time", "dbOpen() time : " + ( end - start )/1000.0);
+		Log.i("time", "==========================================");
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -143,7 +150,6 @@ public class TongActivity extends FragmentActivity implements
 			}
 			return null;
 
-
 		}
 
 		@Override
@@ -168,6 +174,7 @@ public class TongActivity extends FragmentActivity implements
 	}
 
 	public void dbOpen() {
+		String number = null;
 		boolean uri_found = false;
 		ContentResolver cr = this.getContentResolver();
 		DbOpenHelper mDbOpenHelper = new DbOpenHelper(getApplicationContext());
@@ -193,27 +200,27 @@ public class TongActivity extends FragmentActivity implements
 			int numidx = cursor.getColumnIndex(CallLog.Calls.NUMBER);
 			int duridx = cursor.getColumnIndex(CallLog.Calls.DURATION);
 			int typeidx = cursor.getColumnIndex(CallLog.Calls.TYPE);
-			boolean found = false;
 
 			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd HH:mm");
 
-			int where = 0;
 
 			cursor.moveToFirst();
 			do {
 
 				name = cursor.getString(nameidx);
+				number = cursor.getString(numidx);
 				if (name == null) {
 					name = cursor.getString(numidx);
+
 				}
 
 				if (mDbOpenHelper.isDuplicateID(cursor.getString(ididx))) {
-					Log.d("TEST", "Data is duplicated");
+//					Log.d("TEST", "Data is duplicated");
 				} else {
-					Log.d("TEST", "Data is entered");
+//					Log.d("TEST", "Data is entered");
 					mDbOpenHelper
 							.insertColumn(cursor.getString(ididx), name,
-									formatter.format(new Date(cursor
+									number, formatter.format(new Date(cursor
 											.getLong(dateidx))), cursor
 											.getString(duridx), cursor
 											.getString(typeidx));
@@ -223,22 +230,51 @@ public class TongActivity extends FragmentActivity implements
 
 			Cursor t = mDbOpenHelper.getAllColumns();
 
-			// Toast.makeText(getApplication(), t.getCount() + "",
-			// Toast.LENGTH_SHORT).show();
+//			t.moveToFirst();
+//			do {
+//				Log.d("check",
+//						t.getString(t.getColumnIndex(DataBases.CreateDB.callID))
+//								+ "/"
+//								+ t.getString(t
+//										.getColumnIndex(DataBases.CreateDB.NAME))
+//								+ "/"
+//								+ formatter.format(new Date(
+//										t.getLong(t
+//												.getColumnIndex(DataBases.CreateDB.DATE)))));
+//			} while (t.moveToNext());
 
-			t.moveToFirst();
-			do {
-				Log.d("check",
-						t.getString(t.getColumnIndex(DataBases.CreateDB.callID))
-								+ "/"
-								+ t.getString(t
-										.getColumnIndex(DataBases.CreateDB.NAME))
-								+ "/"
-								+ formatter.format(new Date(
-										t.getLong(t
-												.getColumnIndex(DataBases.CreateDB.DATE)))));
-			} while (t.moveToNext());
+		}
+	}
 
+	public class PhoneStateCheckListener extends PhoneStateListener {
+		TongActivity tongActivity;
+
+		PhoneStateCheckListener(TongActivity _tongActivity) {
+			tongActivity = _tongActivity;
+		}
+
+		/*
+		 * 전화 수신, 발신 상태일 때의 이벤트를 캐치하여 처리하는 리스너 (non-Javadoc)
+		 * 
+		 * @see android.telephony.PhoneStateListener#onCallStateChanged(int,
+		 * java.lang.String)
+		 */
+		@Override
+		public void onCallStateChanged(int state, String incomingNumber) {
+			if (state == TelephonyManager.CALL_STATE_IDLE) {
+				Toast.makeText(tongActivity,
+						"STATE_IDLE : Incoming number " + incomingNumber,
+						Toast.LENGTH_SHORT).show();
+			} else if (state == TelephonyManager.CALL_STATE_RINGING) {
+				Toast.makeText(tongActivity,
+						"STATE_RINGING : Incoming number " + incomingNumber,
+						Toast.LENGTH_SHORT).show();
+				// 수신 부분 입니다.
+			} else if (state == TelephonyManager.CALL_STATE_OFFHOOK) {
+				Toast.makeText(tongActivity,
+						"STATE_OFFHOOK : Incoming number " + incomingNumber,
+						Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 }
