@@ -1,5 +1,6 @@
 package com.hb.app.tong;
 
+import gps.tong.Regps;
 import gps.tong.gpsDBHelper;
 
 import java.util.ArrayList;
@@ -8,7 +9,9 @@ import java.util.Calendar;
 import model.tong.DataBases;
 import model.tong.DbOpenHelper;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.CallLog;
 import android.support.v4.app.Fragment;
@@ -84,25 +87,32 @@ public class CallListFragment extends Fragment {
 						@Override
 						public void onItemClick(AdapterView<?> parent, View arg1,
 								int position, long arg3) {
-//							Cursor c1 = DbOpenHelper.mDB.rawQuery("SELECT name FROM calldb", null);
-//							if(c1.moveToFirst())	{
-//								do	{
-//								String s1 = c1.getString(c1.getColumnIndex("name"));
-//								Log.i("name", s1);
-//								}while(c1.moveToNext());
-//							}
+
 							
 							String st = (String) parent.getAdapter().getItem(position);
 							Cursor c = DbOpenHelper.mDB.rawQuery("SELECT * FROM calldb WHERE name='"+st + "' ORDER BY date DESC", null);
 							if(c.moveToFirst())	{
 								st = c.getString(c.getColumnIndex("date"));
-								Toast.makeText(getActivity(), position+" : " + st, Toast.LENGTH_SHORT).show();
+								gpsDBHelper mDB = new gpsDBHelper(getActivity(), null, 2);
+								SQLiteDatabase db =  mDB.getReadableDatabase();
+								c = db.rawQuery("SELECT * FROM gpsinfo WHERE date='" + st + "' ORDER BY date DESC", null);
+								if(c.moveToFirst())	{
+								String l1 = c.getString(c.getColumnIndex("gpsinfo1"));	//위도 얻기
+								String l2 = c.getString(c.getColumnIndex("gpsinfo2"));	//경도 얻기
+//								Toast.makeText(getActivity(), "위도 : " + l1 + "  경도 : " + l2, Toast.LENGTH_SHORT).show();
+								
+								Intent intent=new Intent(getActivity() , Regps.class);
+								intent.putExtra("gps1",	l1);
+								intent.putExtra("gps2", l2);
+								startActivity(intent);
+								}
+								else	{
+									Toast.makeText(getActivity(), "위치정보를 찾을 수 없습니다", Toast.LENGTH_SHORT).show();
+								}
 							} else	{
-								Toast.makeText(getActivity(), "No Cursor!", Toast.LENGTH_SHORT).show();
+								Toast.makeText(getActivity(), "callDB Empty", Toast.LENGTH_SHORT).show();
 							}
-//							gpsDBHelper g = new gpsDBHelper(getActivity(), null, 2);
-//							Log.i("gps",  "gpsContactCount : " + g.getGps());
-//							g.closeDB();
+
 							itemPosition = position;
 						}
 

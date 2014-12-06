@@ -2,6 +2,7 @@ package com.hb.app.tong;
 
 import gps.tong.Contact;
 import gps.tong.GpsInfo;
+import gps.tong.Regps;
 import gps.tong.gpsDBHelper;
 import gps.tong.gpsadpater;
 
@@ -98,7 +99,12 @@ public class MapFragment extends Fragment {
 				int setpos = position + 1;
 				sitem = db.getContact(setpos);
 				
-				intent=new Intent("com.example.gpstest.recgps");
+//				intent=new Intent("com.example.gpstest.recgps");
+//				intent.putExtra("gps1",	sitem.gpsinfo1);
+//				intent.putExtra("gps2", sitem.gpsinfo2);
+//				startActivity(intent);
+				
+				Intent intent=new Intent(getActivity() , Regps.class);
 				intent.putExtra("gps1",	sitem.gpsinfo1);
 				intent.putExtra("gps2", sitem.gpsinfo2);
 				startActivity(intent);

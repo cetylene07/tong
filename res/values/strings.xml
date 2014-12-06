@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, TongActivity!</string>
     <string name="app_name">Tong</string>
     <string name="choose_call_opt">Choice</string>
+    <string name="hello">Hello World, NMapViewer!</string>
+    <string name="str_done">완료</string>
 
     <!-- 차트에서 X 축의 각 항목 이름 -->
     <string name="mon">mon</string>

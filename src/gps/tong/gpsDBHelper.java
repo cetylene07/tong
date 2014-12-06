@@ -21,6 +21,7 @@ public class gpsDBHelper extends SQLiteOpenHelper {
 	public static final String colDate = "date";
 	public static final String colGpsinfo1 = "gpsinfo1";
 	public static final String colGpsinfo2 = "gpsinfo2";
+	public static SQLiteDatabase mDB;
 
 	public gpsDBHelper(Context context, CursorFactory factory, int version) {
 		
@@ -50,6 +51,7 @@ public class gpsDBHelper extends SQLiteOpenHelper {
 
 	// 새로운 Contact 함수 추가
 	public void addContact(Contact contact) {
+		mDB = this.getReadableDatabase();
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -189,6 +191,7 @@ public class gpsDBHelper extends SQLiteOpenHelper {
 	}
 	
 	public void closeDB()	{
+		mDB.close();
 		this.close();
 	}
 

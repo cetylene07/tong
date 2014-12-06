@@ -48,6 +48,24 @@
             android:name="com.hb.app.tong.SetPreferenceActivity"
             android:label="@string/title_activity_set_preference" >
         </activity>
+        <activity android:name="gps.tong.Regps" >
+            <intent-filter>
+                <action android:name="gps.tong.recgps" />
+                <action android:name="android.intent.action.CREATE" />
+                <action android:name="android.intent.action.EDIT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name="gps.tong.Regps1" >
+            <intent-filter>
+                <action android:name="gps.tong.Recgps1" />
+                <action android:name="android.intent.action.CREATE" />
+                <action android:name="android.intent.action.EDIT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
