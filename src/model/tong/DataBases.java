@@ -9,7 +9,7 @@ public final class DataBases {
 		public static final String callID = "callID";
 		public static final String NAME = "name";
 		public static final String NUMBER = "number";
-		public static final String image = "image"; // �븘吏� �궗�슜�븯吏� �븡�쓬
+		public static final String image = "image";
 		public static final String DATE = "date";
 		public static final String DURATION = "duration";
 		public static final String TYPE = "type";

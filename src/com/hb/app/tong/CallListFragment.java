@@ -77,14 +77,32 @@ public class CallListFragment extends Fragment {
 						int position, long id) {
 
 					OnItemClickListener listener = new OnItemClickListener() {
+						/*
+						 * 아이템을 누르면 가장 최근에 연락한 위치가 나오도록 함
+						 */
 
 						@Override
-						public void onItemClick(AdapterView<?> arg0, View arg1,
+						public void onItemClick(AdapterView<?> parent, View arg1,
 								int position, long arg3) {
-							Toast.makeText(getActivity(), position+"", Toast.LENGTH_SHORT).show();
-							gpsDBHelper g = new gpsDBHelper(getActivity(), null, 2);
-							Log.i("gps",  "gpsContactCount : " + g.getGps());
-							g.closeDB();
+//							Cursor c1 = DbOpenHelper.mDB.rawQuery("SELECT name FROM calldb", null);
+//							if(c1.moveToFirst())	{
+//								do	{
+//								String s1 = c1.getString(c1.getColumnIndex("name"));
+//								Log.i("name", s1);
+//								}while(c1.moveToNext());
+//							}
+							
+							String st = (String) parent.getAdapter().getItem(position);
+							Cursor c = DbOpenHelper.mDB.rawQuery("SELECT * FROM calldb WHERE name='"+st + "' ORDER BY date DESC", null);
+							if(c.moveToFirst())	{
+								st = c.getString(c.getColumnIndex("date"));
+								Toast.makeText(getActivity(), position+" : " + st, Toast.LENGTH_SHORT).show();
+							} else	{
+								Toast.makeText(getActivity(), "No Cursor!", Toast.LENGTH_SHORT).show();
+							}
+//							gpsDBHelper g = new gpsDBHelper(getActivity(), null, 2);
+//							Log.i("gps",  "gpsContactCount : " + g.getGps());
+//							g.closeDB();
 							itemPosition = position;
 						}
 
