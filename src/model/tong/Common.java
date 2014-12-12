@@ -7,5 +7,5 @@ public class Common {
 	
 	// 날찌 포멧
 //	public String dateFormat = "yyyy-MM-dd HH:mm";
-	public static final String dateFormat = "yyyy-MM";
+	public static final String dateFormat = "yyyy-MM-dd HH:mm";
 }
