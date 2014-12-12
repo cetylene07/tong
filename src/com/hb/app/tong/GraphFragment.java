@@ -1,6 +1,4 @@
-/*
- * �ð� �׷��� ���
- */
+
 
 package com.hb.app.tong;
 

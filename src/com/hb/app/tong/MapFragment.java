@@ -2,7 +2,7 @@ package com.hb.app.tong;
 
 import gps.tong.Contact;
 import gps.tong.GpsInfo;
-import gps.tong.Regps;
+import gps.tong.Regps1;
 import gps.tong.gpsDBHelper;
 import gps.tong.gpsadpater;
 
@@ -16,7 +16,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import model.tong.Common;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -72,15 +71,15 @@ public class MapFragment extends Fragment {
 		btnShowLocation = (Button) getView().findViewById(R.id.button1);
 		btnShutdown = (Button) getView().findViewById(R.id.button2);
 
-		Button btnTest = (Button) getView().findViewById(R.id.button3);
-		btnTest.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				//test
-				db.getGpsContact();
-			}
-		});
+//		Button btnTest = (Button) getView().findViewById(R.id.button3);
+//		btnTest.setOnClickListener(new OnClickListener() {
+//			
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				//test
+//				db.getGpsContact();
+//			}
+//		});
 		
 		db = new gpsDBHelper(getActivity(), null, 2);
 		
@@ -104,7 +103,7 @@ public class MapFragment extends Fragment {
 //				intent.putExtra("gps2", sitem.gpsinfo2);
 //				startActivity(intent);
 				
-				Intent intent=new Intent(getActivity() , Regps.class);
+				Intent intent=new Intent(getActivity() , Regps1.class);
 				intent.putExtra("gps1",	sitem.gpsinfo1);
 				intent.putExtra("gps2", sitem.gpsinfo2);
 				startActivity(intent);

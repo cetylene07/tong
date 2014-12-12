@@ -9,16 +9,16 @@
         android:id="@+id/call_image"
         android:layout_width="?android:attr/listPreferredItemHeight"
         android:layout_height="?android:attr/listPreferredItemHeight"
-        android:src="@drawable/ic_contact_picture_holo_light" 
-        android:visibility="gone"/>
+        android:src="@drawable/ic_contact_picture_holo_light"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/call_rank"
         android:layout_width="?android:attr/listPreferredItemHeight"
         android:layout_height="?android:attr/listPreferredItemHeight"
         android:fontFamily="sans-serif-light"
-        android:text="1"
         android:gravity="center"
+        android:text="1"
         android:textSize="50dp" />
 
     <TextView

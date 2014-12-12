@@ -46,13 +46,6 @@
 
     </LinearLayout>
 
-             <Button
-                 android:id="@+id/button3"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:text=" 테스트..."
-                 android:textSize="25sp" />
-
              <ListView
                  android:id="@+id/listView1"
                  android:layout_width="match_parent"

@@ -1,7 +1,3 @@
-/*
- * 처占쏙옙 占쏙옙占쏙옙화占쏙옙
- */
-
 package com.hb.app.tong;
 
 import gps.tong.gpsDBHelper;
@@ -11,7 +7,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import model.tong.Common;
-import model.tong.DataBases;
 import model.tong.DbOpenHelper;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;

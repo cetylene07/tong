@@ -5,7 +5,6 @@ import java.util.List;
 
 import model.tong.DataBases;
 import model.tong.DbOpenHelper;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;

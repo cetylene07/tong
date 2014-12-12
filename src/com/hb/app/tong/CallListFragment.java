@@ -1,6 +1,6 @@
 package com.hb.app.tong;
 
-import gps.tong.Regps;
+import gps.tong.Regps1;
 import gps.tong.gpsDBHelper;
 
 import java.util.ArrayList;
@@ -101,7 +101,7 @@ public class CallListFragment extends Fragment {
 								String l2 = c.getString(c.getColumnIndex("gpsinfo2"));	//경도 얻기
 //								Toast.makeText(getActivity(), "위도 : " + l1 + "  경도 : " + l2, Toast.LENGTH_SHORT).show();
 								
-								Intent intent=new Intent(getActivity() , Regps.class);
+								Intent intent=new Intent(getActivity() , Regps1.class);
 								intent.putExtra("gps1",	l1);
 								intent.putExtra("gps2", l2);
 								startActivity(intent);

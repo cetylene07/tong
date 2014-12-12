@@ -1,8 +1,8 @@
 package com.hb.app.tong;
 
-import android.os.Bundle;
+
 import android.app.Activity;
-import android.view.Menu;
+import android.os.Bundle;
 
 public class SetPreferenceActivity extends Activity {
 
