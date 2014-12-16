@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,7 +36,7 @@ public class MapFragment extends Fragment {
 	private Button btnShutdown;
 
 	private ListView listview;
-	
+
 	private gpsDBHelper db;
 
 	private Double gps1;
@@ -43,18 +44,17 @@ public class MapFragment extends Fragment {
 	private String date;
 
 	private GpsInfo gps;
-	
+
 	private List<Contact> list;
 	private Contact sitem;
 	gpsadpater adapter;
-	
+
 	Intent intent;
 	TimerTask testt;
 	Timer timert;
-	
+
 	private Handler gHandler;
 	private Runnable gRunnable;
-
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,40 +71,38 @@ public class MapFragment extends Fragment {
 		btnShowLocation = (Button) getView().findViewById(R.id.button1);
 		btnShutdown = (Button) getView().findViewById(R.id.button2);
 
-//		Button btnTest = (Button) getView().findViewById(R.id.button3);
-//		btnTest.setOnClickListener(new OnClickListener() {
-//			
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				//test
-//				db.getGpsContact();
-//			}
-//		});
-		
-		db = new gpsDBHelper(getActivity(), null, 2);
-		
+		// Button btnTest = (Button) getView().findViewById(R.id.button3);
+		// btnTest.setOnClickListener(new OnClickListener() {
+		//
+		// public void onClick(View v) {
+		// // TODO Auto-generated method stub
+		// //test
+		// db.getGpsContact();
+		// }
+		// });
 
-		
-        list = new ArrayList<Contact>();
-        list = db.getAllContacts();
-		
+		db = new gpsDBHelper(getActivity(), null, 2);
+
+		list = new ArrayList<Contact>();
+		list = db.getAllContacts();
+
 		adapter = new gpsadpater(getActivity(), list);
 		listview = (ListView) getView().findViewById(R.id.listView1);
 		listview.setAdapter(adapter);
-		
 
-        listview.setOnItemClickListener(new OnItemClickListener() {	 
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		listview.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
 				int setpos = position + 1;
 				sitem = db.getContact(setpos);
-				
-//				intent=new Intent("com.example.gpstest.recgps");
-//				intent.putExtra("gps1",	sitem.gpsinfo1);
-//				intent.putExtra("gps2", sitem.gpsinfo2);
-//				startActivity(intent);
-				
-				Intent intent=new Intent(getActivity() , Regps1.class);
-				intent.putExtra("gps1",	sitem.gpsinfo1);
+
+				// intent=new Intent("com.example.gpstest.recgps");
+				// intent.putExtra("gps1", sitem.gpsinfo1);
+				// intent.putExtra("gps2", sitem.gpsinfo2);
+				// startActivity(intent);
+
+				Intent intent = new Intent(getActivity(), Regps1.class);
+				intent.putExtra("gps1", sitem.gpsinfo1);
 				intent.putExtra("gps2", sitem.gpsinfo2);
 				startActivity(intent);
 			}
@@ -115,25 +113,25 @@ public class MapFragment extends Fragment {
 				testtimer();
 			}
 		});
-		
+
 		btnShutdown.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View arg0) {
 				stoptimer();
 			}
 		});
-	
+
 	}
-	
-	public void testtimer(){
+
+	public void testtimer() {
 		timert = new Timer();
 		gHandler = new Handler();
-		gRunnable = new Runnable(){
+		gRunnable = new Runnable() {
 			public void run() {
 				gpsdbreturn();
 			}
 		};
-		
-		testt = new TimerTask(){
+
+		testt = new TimerTask() {
 			public void run() {
 				gHandler.post(gRunnable);
 			}
@@ -141,17 +139,24 @@ public class MapFragment extends Fragment {
 		timert = new Timer();
 		timert.scheduleAtFixedRate(testt, 500, 10000);
 	}
-	public void stoptimer(){
-		gHandler.removeCallbacks(gRunnable);
+
+	public void stoptimer() {
+
+		try {
+			gHandler.removeCallbacks(gRunnable);
+		} catch (NullPointerException ex) {
+			Log.e("ERROR", "NullPointerExcetion : " + ex.toString());
+			Toast.makeText(getActivity(), "먼저 GPS 기능을 실행해주세요",
+					Toast.LENGTH_SHORT).show();
+		}
 		timert.cancel();
 	}
-	
-	
-	public void gpsdbreturn(){
+
+	public void gpsdbreturn() {
 		gps = new GpsInfo(getActivity());
 		Date today = Calendar.getInstance().getTime();
-		SimpleDateFormat fdate = new SimpleDateFormat(
-				Common.dateFormat, Locale.KOREA);
+		SimpleDateFormat fdate = new SimpleDateFormat(Common.dateFormat,
+				Locale.KOREA);
 		// GPS 사용유무 가져오기
 		if (gps.isGetLocation()) {
 
@@ -161,32 +166,32 @@ public class MapFragment extends Fragment {
 			gps2 = longitude;
 
 			date = fdate.format(today);
-			db.addContact(new Contact(date, gps1.toString(), gps2
-					.toString()));
+			db.addContact(new Contact(date, gps1.toString(), gps2.toString()));
 
-			Toast.makeText(getActivity().getApplicationContext(),
-					"당신의 위치 - \n위도: " + gps1 + "\n경도: " + gps2 + "\n시간 : " + date,
-					Toast.LENGTH_LONG).show();
+			Toast.makeText(
+					getActivity().getApplicationContext(),
+					"당신의 위치 - \n위도: " + gps1 + "\n경도: " + gps2 + "\n시간 : "
+							+ date, Toast.LENGTH_LONG).show();
 		} else {
 			// GPS 를 사용할수 없으므로
 			gps.showSettingsAlert();
 		}
 	}
 
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		getMenuInflater().inflate(R.menu.main, menu);
-//		return true;
-//	}
-//
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		int id = item.getItemId();
-//		if (id == R.id.action_settings) {
-//			db.deleteAll();
-//			return true;
-//		}
-//		return super.onOptionsItemSelected(item);
-//	}
+	// @Override
+	// public boolean onCreateOptionsMenu(Menu menu) {
+	// getMenuInflater().inflate(R.menu.main, menu);
+	// return true;
+	// }
+	//
+	// @Override
+	// public boolean onOptionsItemSelected(MenuItem item) {
+	// int id = item.getItemId();
+	// if (id == R.id.action_settings) {
+	// db.deleteAll();
+	// return true;
+	// }
+	// return super.onOptionsItemSelected(item);
+	// }
 
 }

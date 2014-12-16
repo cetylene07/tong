@@ -4,7 +4,6 @@ import android.provider.BaseColumns;
 
 public final class DataBases {
 
-	// 占쏙옙占싱븝옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙
 	public static final class CreateDB implements BaseColumns {
 		public static final String callID = "callID";
 		public static final String NAME = "name";

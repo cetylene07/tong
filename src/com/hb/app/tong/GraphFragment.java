@@ -86,7 +86,7 @@ public class GraphFragment extends Fragment {
 		StringBuilder result = new StringBuilder();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
-		result.append("�� ��� ���� : " + cursor.getCount() + "��\n");
+//		result.append("�� ��� ���� : " + cursor.getCount() + "��\n");
 
 		int where = 0;
 
@@ -224,7 +224,7 @@ public class GraphFragment extends Fragment {
 			}
 
 			if (found == false) {
-				list.add(temp); // ���� �߰�
+				list.add(temp);
 			}
 
 		}
@@ -244,41 +244,27 @@ public class GraphFragment extends Fragment {
 				dateinfo.thr_out_dur, dateinfo.fri_out_dur,
 				dateinfo.sat_out_dur });
 
-		// �ð��� ������ �߰�
 		List<int[]> hour_values = new ArrayList<int[]>();
 		hour_values.add(dateinfo.hour_in_dur);
 		hour_values.add(dateinfo.hour_out_dur);
 
-		// �׷��� ����� ���� �׷��� �Ӽ� ���� ��ü
 		XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
 
 		XYMultipleSeriesRenderer hour_renderer = new XYMultipleSeriesRenderer();
 
-		// ��� ǥ�� ����� ũ��
-		// renderer.setChartTitle("���Ϻ� ��ȭ����");
 		renderer.setChartTitleTextSize(40);
 
-		// �з� ���� �̸�
 		String[] titles = new String[] { getString(R.string.receivingTime),
 				getString(R.string.outGoingTime) };
 		String[] test_titles = new String[] {
 				getString(R.string.receivingTime),
 				getString(R.string.outGoingTime) };
 
-		// �׸��� ǥ���ϴ� �� ���� ����
 		int[] colors = new int[] { Color.argb(100, 55, 128, 71),
 				Color.argb(100, 40, 55, 142) };
 
-		// int[] test_colors = new int[] { Color.argb(100, 94, 154, 210) };
-
-		// �з�� ���� ũ�� �� �� ���� ����
-		// renderer.setLabelsTextSize(35);
-		// hour_renderer.setLabelsTextSize(75);
-		// renderer.setChartTitleTextSize(30);
 		renderer.setLegendTextSize(30);
 		hour_renderer.setLegendTextSize(30);
-		// renderer.setAxisTitleTextSize(30);
-		// renderer.setChartValuesTextSize(60);
 
 		int length = colors.length;
 		for (int i = 0; i < length; i++) {
@@ -288,13 +274,9 @@ public class GraphFragment extends Fragment {
 			hour_renderer.addSeriesRenderer(r);
 		}
 
-		// X,Y �� �׸��̸��� ���� ũ��
-		// renderer.setXTitle("����");
-		// renderer.setYTitle("����(��)");
 		renderer.setAxisTitleTextSize(25);
 		hour_renderer.setAxisTitleTextSize(18);
 
-		// ��ġ�� ���� ũ�� , X�� �ּ� �ִ밪 , Y�� �ּ� �ִ밪 ����
 		renderer.setLabelsTextSize(14);
 		renderer.setXAxisMin(0.5);
 		renderer.setXAxisMax(7.5);
@@ -305,7 +287,6 @@ public class GraphFragment extends Fragment {
 		hour_renderer.setXAxisMax(24.5);
 		hour_renderer.setYAxisMin(0.5);
 
-		// ��Ƽ�˷��̽� ����
 		renderer.setAntialiasing(true);
 
 		renderer.setXLabels(0);
@@ -322,45 +303,30 @@ public class GraphFragment extends Fragment {
 		for (int i = 0; i < 24; i++)
 			hour_renderer.addXTextLabel(i, i + "");
 
-		// X��� Y���� ���� ����
 		renderer.setAxesColor(Color.BLACK);
 
-		// �������, X,Y�� ����, ��ġ���� ���� ����
 		renderer.setLabelsColor(Color.BLACK);
 
-		// X�� ǥ�� ����
-		// renderer.setXLabels(7);
-		//
-		// Y�� ǥ�� ����
-		// renderer.setYLabels(5);
-
-		// X,Y�� ���Ĺ���
 		renderer.setXLabelsAlign(Align.LEFT);
 		renderer.setYLabelsAlign(Align.LEFT);
 		hour_renderer.setXLabelsAlign(Align.LEFT);
 		hour_renderer.setYLabelsAlign(Align.LEFT);
 
-		// X,Y�� ��ũ�� ���� ON/OFF
 		renderer.setPanEnabled(false, false);
 		hour_renderer.setPanEnabled(false, false);
 
-		// ZOOM��� ON/OFF
 		renderer.setZoomEnabled(false, false);
 		hour_renderer.setZoomEnabled(false, false);
 
-		// ZOOM ����
 		renderer.setZoomRate(1.0f);
 		hour_renderer.setZoomRate(1.0f);
 
-		// ���밣 ����
 		renderer.setBarSpacing(0.5f);
 		hour_renderer.setBarSpacing(0.5f);
 
-		// ��� ����
 		 renderer.setMarginsColor(Color.parseColor("#ffffff"));
 		 hour_renderer.setMarginsColor(Color.parseColor("#ffffff"));
 
-		// ���� ���� ����
 		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
 		for (int i = 0; i < titles.length; i++) {
 			CategorySeries series = new CategorySeries(titles[i]);
@@ -390,7 +356,6 @@ public class GraphFragment extends Fragment {
 				hour_renderer, Type.DEFAULT);
 		//
 
-		// ���ǳ�
 		Spinner spin = (Spinner) getView().findViewById(R.id.chart_spinner);
 		spin.setPrompt("Choice Option");
 		chart_spin = ArrayAdapter.createFromResource(getActivity(),
